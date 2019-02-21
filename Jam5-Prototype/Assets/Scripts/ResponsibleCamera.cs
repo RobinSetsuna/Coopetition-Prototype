@@ -12,20 +12,12 @@ public class ResponsibleCamera : MonoBehaviour {
 
 	// Use this for initialization
 	public static ResponsibleCamera _instance;
-	
+	private float tempVelocity;
 	private Vector2 velocity; // the speed reference for camera
+	[Header("Camera")]
 	[SerializeField]private float smoothTimeY; // the smooth time for camera change the position on Y - axis, the larger number will slow the camera moving speed. 0 will be response instantly 
 	[SerializeField]private float smoothTimeX; // the smooth time for camera change the position on X - axis, the larger number will slow the camera moving speed. 0 will be response instantly 
 	[SerializeField]private float zoomSensity; // how responsive you wanna the camera to do the zoom 
-	
-	
-	
-	
-	private float default_y;
-	private float previous_x;
-
-	private bool chasingX;
-	private bool chasingY;
 	private GameObject[] Players;
 	
 	[Header("CameraBounds")]
@@ -74,6 +66,7 @@ public class ResponsibleCamera : MonoBehaviour {
 			x = Random.Range(-1f, 1f) * shakeMagnitude;
 			y = Random.Range(-1f, 1f) * shakeMagnitude;
 		}
+		var camera = GetComponent<Camera>();
 		switch (currentState)
 		{
 			case CameraState.Idle:
@@ -90,19 +83,21 @@ public class ResponsibleCamera : MonoBehaviour {
 				{
 					// if one player 's position even larger than the bounds;
 					// give the breath time between zoom out and in
-					if (lastZoomIn + 1f < Time.unscaledTime && gameObject.GetComponent<Camera>().orthographicSize < maxCameraSize)
+					if (lastZoomIn + 0.5f < Time.unscaledTime && camera.orthographicSize < maxCameraSize)
 					{
-							gameObject.GetComponent<Camera>().orthographicSize += 0.05f;
-							lastZoomOut = Time.unscaledTime;
+						//camera.orthographicSize += 0.05f;
+						camera.orthographicSize = Mathf.SmoothDamp(camera.orthographicSize, camera.orthographicSize + 2f, ref tempVelocity,smoothTimeX);	
+						lastZoomOut = Time.unscaledTime;
 						
 					}
 					
 				}else if (compareSmallest.x < 0 || compareSmallest.y < 0)
 				{
 					// or one player 's position even larger than the bounds;
-					if(lastZoomIn + 1f < Time.unscaledTime && gameObject.GetComponent<Camera>().orthographicSize < maxCameraSize)
+					if(lastZoomIn + 0.5f < Time.unscaledTime && camera.orthographicSize < maxCameraSize)
 					{
-						gameObject.GetComponent<Camera>().orthographicSize += 0.05f;
+						//gameObject.GetComponent<Camera>().orthographicSize += 0.05f;
+						camera.orthographicSize = Mathf.SmoothDamp(camera.orthographicSize, camera.orthographicSize + 2f, ref tempVelocity,smoothTimeX);	
 						lastZoomOut = Time.unscaledTime;
 					}
 					
@@ -110,7 +105,8 @@ public class ResponsibleCamera : MonoBehaviour {
 				else if (playerDistance + zoomSensity < cameraBound && lastZoomOut + 2f < Time.unscaledTime)
 				{
 					// we are safe to zoom in now
-					gameObject.GetComponent<Camera>().orthographicSize -= 0.03f;
+					//camera.orthographicSize -= 0.03f;
+					camera.orthographicSize = Mathf.SmoothDamp(camera.orthographicSize, camera.orthographicSize - 6f, ref tempVelocity,smoothTimeX*2);	
 					lastZoomIn = Time.unscaledTime;
 				}
 		
@@ -129,7 +125,7 @@ public class ResponsibleCamera : MonoBehaviour {
 				break;
 			
 			case CameraState.Focusing:
-				var camera = GetComponent<Camera>();
+				
 				camera.orthographicSize = Mathf.SmoothDamp(camera.orthographicSize,cameraSizeOnFocusing, ref velocity.x,smoothTimeX * 4);
 				posx = Mathf.SmoothDamp(transform.position.x,target.position.x, ref velocity.x,smoothTimeX);
 				posy = Mathf.SmoothDamp(transform.position.y,target.position.y, ref velocity.y, smoothTimeY);
@@ -237,8 +233,8 @@ public class ResponsibleCamera : MonoBehaviour {
 		// Screens coordinate corner location
 		var camera = GetComponent<Camera>();
 		//var upperLeftScreen = new Vector3(Screen.width*0.15f, Screen.height*0.75f, 0 );
-		var upperRightScreen = new Vector3(Screen.width*0.90f + camera.orthographicSize*10, Screen.height*0.85f + camera.orthographicSize*5, 0);
-		var lowerLeftScreen = new Vector3(Screen.width*0.10f + camera.orthographicSize*10, Screen.height*0.15f + camera.orthographicSize*5, 0);
+		var upperRightScreen = new Vector3(Screen.width*0.90f + camera.orthographicSize*8, Screen.height*0.90f + camera.orthographicSize*4, 0);
+		var lowerLeftScreen = new Vector3(Screen.width*0.10f - camera.orthographicSize*8, Screen.height*0.10f - camera.orthographicSize*4, 0);
 		//var lowerRightScreen = new Vector3(Screen.width*0.85f, Screen.height*0.25f, 0);
    
 		//Corner locations in world coordinates
