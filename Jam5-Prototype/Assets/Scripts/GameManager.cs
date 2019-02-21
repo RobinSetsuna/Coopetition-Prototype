@@ -23,9 +23,9 @@ public class GameManager : MonoBehaviour {
     [SerializeField] private float minChairHoldTime;
     [SerializeField] private int totalRounds;
     [SerializeField] private float initialChairHoldTime;                    //Chair hold time for each round
-    [SerializeField] private float chairDropTimeDecInterval;                //decrease the chair hold time by 1  for each total time interval
-    [SerializeField] private float chairDropTimeDecOnHit;                   //decrease the current chair timer when get hit
-    [SerializeField] private float chairDropTimeDecOnDrop;                  //decrease the chair Hold Time when drop the chair
+    [SerializeField] private float chairHoldTimeDecOnInterval;              //decrease the chair hold time by 1  for each total time interval
+    [SerializeField] private float chairHoldTimeDecOnHit;                   //decrease the current chair timer when get hit
+    [SerializeField] private float chairHoldTimeDecOnDrop;                  //decrease the chair Hold Time when drop the chair
 
     private float chairHoldTime;
     private int roundIndex;
@@ -64,15 +64,18 @@ public class GameManager : MonoBehaviour {
                         StartCoroutine(ChairHoldTimeDecreaser());
                         break;
                     case GameState.Battle:
-                        StartCoroutine(ChairTimer());
                         //Todo: Disactivate black fog
                         break;
                     case GameState.End:
+                        //Distroy former points and black fog
                         roundIndex += 1;
-                        if(roundIndex % (totalRounds + 1) == 0)
+                        if (roundIndex % (totalRounds + 1) == 0)
                         {
                             //Game Over
+                            //Show total scores and the winner!\                          
                         }
+                        else
+                            CurrentGameState = GameState.Initial;
                         break;
                 }
             }
@@ -93,10 +96,6 @@ public class GameManager : MonoBehaviour {
 
         roundIndex = 1;
 
-    }
-    public void PlayerHit()
-    {
-        chairHoldTime -= chairDropTimeDecOnHit;
     }
 
     void Awake()
@@ -124,18 +123,9 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-
     public void QuitGame()
     {
         Application.Quit();
-    }
-    public void ChairFound()
-    {
-        CurrentGameState = GameState.Battle;
-    }
-    public void GetChair()
-    {
-        StartCoroutine(ChairTimer());
     }
 
     IEnumerator ChairTimer()
@@ -153,8 +143,17 @@ public class GameManager : MonoBehaviour {
             else
             {
                 LogUtility.PrintLogFormat("GameManager", "ChairDropped");
-                //Todo: drop the chair
-                chairHoldTime = currentChairHoldTime - chairDropTimeDecOnDrop;
+                /////////////Todo: drop the chair////////////////
+                
+
+
+
+
+
+
+
+
+                chairHoldTime = currentChairHoldTime - chairHoldTimeDecOnDrop;
                 break;
             }
         }      
@@ -175,7 +174,15 @@ public class GameManager : MonoBehaviour {
             else
             {
                 LogUtility.PrintLogFormat("GameManager", "Highlight the chair");
-                //Todo: Hightlight the chair
+                ///////////Todo: Hightlight the chair///////////////
+
+
+
+
+
+
+
+
                 break;
             }
             yield return null;
@@ -185,13 +192,13 @@ public class GameManager : MonoBehaviour {
     IEnumerator ChairHoldTimeDecreaser()
     {
         LogUtility.PrintLogFormat("GameManager", "EnterChairHoldTimeDecreaser");
-        float Interval = chairDropTimeDecInterval;
+        float Interval = chairHoldTimeDecOnInterval;
         float timer = 0;
         while(CurrentGameState == GameState.Searching)
         {
             if (timer > Interval)
             {
-                Interval += chairDropTimeDecInterval;
+                Interval += chairHoldTimeDecOnInterval;
                 if (chairHoldTime != minChairHoldTime)
                 {
                     chairHoldTime--;
@@ -228,18 +235,33 @@ public class GameManager : MonoBehaviour {
         CurrentGameState = GameState.End;
         yield return null;
     }
-  
-    public void EndCurrentRound(string playerInChair, string playerCarryChair)
-    {
-        CurrentGameState = GameState.End;
-        UpdatePlayerScore(playerInChair, playerCarryChair);
-    }
-    //when the end poiot is triggered, call this function to update player score
+
     private void UpdatePlayerScore(string playerInChair, string playerCarryChair)
     {
         playerScore[playerInChair] += 1;
         playerScore[playerCarryChair] += 2;
     }
 
-    
+    ///////////////// For other script to call///////////////////////
+    public void EndCurrentRound(string playerInChair, string playerCarryChair)        //each player has a string id, like Player1, Player2, Player3 ...        
+    {
+        CurrentGameState = GameState.End;
+        UpdatePlayerScore(playerInChair, playerCarryChair);
+    }
+
+    public void ChairFound()
+    {
+        if (CurrentGameState != GameState.Battle)
+            CurrentGameState = GameState.Battle;
+        StartCoroutine(ChairTimer());
+    }
+    public void ChairGet()
+    {
+        StartCoroutine(ChairTimer());
+    }
+
+    public void PlayerHit()
+    {
+        chairHoldTime -= chairHoldTimeDecOnHit;
+    }
 }
