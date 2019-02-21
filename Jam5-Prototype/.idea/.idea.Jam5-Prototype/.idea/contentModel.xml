@@ -10,6 +10,7 @@
         <e p="Scripts" t="Include">
           <e p="Events.cs" t="Include" />
           <e p="GameManager.cs" t="Include" />
+          <e p="Player.cs" t="Include" />
           <e p="ResponsibleCamera.cs" t="Include" />
           <e p="SimpleController.cs" t="Include" />
           <e p="Utility" t="Include">
