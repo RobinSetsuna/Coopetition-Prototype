@@ -72,7 +72,7 @@ public class GameManager : MonoBehaviour {
                         if (roundIndex % (totalRounds + 1) == 0)
                         {
                             //Game Over
-                            //Show total scores and the winner!\                          
+                            //Show total scores and the winner!\
                         }
                         else
                             CurrentGameState = GameState.Initial;
@@ -144,7 +144,7 @@ public class GameManager : MonoBehaviour {
             {
                 LogUtility.PrintLogFormat("GameManager", "ChairDropped");
                 /////////////Todo: drop the chair////////////////
-                
+
 
 
 
@@ -156,7 +156,7 @@ public class GameManager : MonoBehaviour {
                 chairHoldTime = currentChairHoldTime - chairHoldTimeDecOnDrop;
                 break;
             }
-        }      
+        }
         yield return null;
     }
 
@@ -217,7 +217,7 @@ public class GameManager : MonoBehaviour {
     }
     IEnumerator Timer()
     {
-        float timer = roundDuration;       
+        float timer = roundDuration;
 
         int previousRoundIndex = roundIndex;
 
@@ -243,7 +243,7 @@ public class GameManager : MonoBehaviour {
     }
 
     ///////////////// For other script to call///////////////////////
-    public void EndCurrentRound(string playerInChair, string playerCarryChair)        //each player has a string id, like Player1, Player2, Player3 ...        
+    public void EndCurrentRound(string playerInChair, string playerCarryChair)        //each player has a string id, like Player1, Player2, Player3 ...
     {
         CurrentGameState = GameState.End;
         UpdatePlayerScore(playerInChair, playerCarryChair);
