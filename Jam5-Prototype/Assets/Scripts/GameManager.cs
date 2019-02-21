@@ -119,7 +119,7 @@ public class GameManager : MonoBehaviour {
         Application.Quit();
     }
 
-    public GetChair()
+    public void GetChair()
     {
         StartCoroutine(ChairTimer());
     }
