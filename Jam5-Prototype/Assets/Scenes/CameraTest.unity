@@ -123,6 +123,7 @@ GameObject:
   - component: {fileID: 286329603}
   - component: {fileID: 286329602}
   - component: {fileID: 286329601}
+  - component: {fileID: 286329604}
   - component: {fileID: 286329600}
   m_Layer: 0
   m_Name: Player0
@@ -139,7 +140,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 286329599}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 140b478b86a6eb74ba09279c2a0400bf, type: 3}
+  m_Script: {fileID: 11500000, guid: b8d87f8fe86dff5489c090e8c724fb2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   index: 0
@@ -198,12 +199,12 @@ SpriteRenderer:
   m_SortingLayerID: 1610223073
   m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 4dc334e3e9ac8714a98d7b3db5ff6fd3, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 77ec555d9b111e741ac2c249e3204ca7, type: 3}
   m_Color: {r: 0.18867925, g: 0.274206, b: 0.754717, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.04, y: 0.04}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -217,11 +218,29 @@ Transform:
   m_GameObject: {fileID: 286329599}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 5, y: 5, z: 5}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &286329604
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 286329599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c43939ed065a974c99559d0cf91be9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boosting: 0
+  onChair: 0
+  carrying: 0
+  sightRadius: 5
+  playerIndex: 0
+  myInput: {fileID: 286329600}
+  rb: {fileID: 286329601}
 --- !u!1 &711712969
 GameObject:
   m_ObjectHideFlags: 0
@@ -308,18 +327,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 711712969}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec66dc1d6b8eb134bbad3f5e21e81936, type: 3}
+  m_Script: {fileID: 11500000, guid: 249211f220214d041aaecd3581f209e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  smoothTimeY: 0.5
-  smoothTimeX: 0.5
-  zoomSensity: 15
+  smoothTimeY: 0
+  smoothTimeX: 0
+  zoomSensity: 0
   bounds: 0
   maxCameraPos: {x: 0, y: 0, z: 0}
   minCameraPos: {x: 0, y: 0, z: 0}
   maxCameraSize: 0
   minCameraSize: 0
-  cameraSizeOnFocusing: 10
+  cameraSizeOnFocusing: 0
 --- !u!1 &844548770
 GameObject:
   m_ObjectHideFlags: 0
@@ -330,6 +349,7 @@ GameObject:
   - component: {fileID: 844548774}
   - component: {fileID: 844548773}
   - component: {fileID: 844548772}
+  - component: {fileID: 844548775}
   - component: {fileID: 844548771}
   m_Layer: 0
   m_Name: Player1
@@ -346,7 +366,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 844548770}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 140b478b86a6eb74ba09279c2a0400bf, type: 3}
+  m_Script: {fileID: 11500000, guid: b8d87f8fe86dff5489c090e8c724fb2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   index: 1
@@ -405,12 +425,12 @@ SpriteRenderer:
   m_SortingLayerID: 1610223073
   m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 4dc334e3e9ac8714a98d7b3db5ff6fd3, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 77ec555d9b111e741ac2c249e3204ca7, type: 3}
   m_Color: {r: 0.43867922, g: 1, b: 0.51927, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.04, y: 0.04}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -424,11 +444,29 @@ Transform:
   m_GameObject: {fileID: 844548770}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 5, y: 5, z: 5}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &844548775
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 844548770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c43939ed065a974c99559d0cf91be9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boosting: 0
+  onChair: 0
+  carrying: 0
+  sightRadius: 5
+  playerIndex: 1
+  myInput: {fileID: 286329600}
+  rb: {fileID: 286329601}
 --- !u!1 &974709216
 GameObject:
   m_ObjectHideFlags: 0
@@ -480,12 +518,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 8bb2efbf75e841347ae51e6b36ba730d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4c7a3c220505c1640929c79d2c2fa5ec, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.16, y: 0.16}
+  m_Size: {x: 4.41, y: 2.71}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -514,6 +552,7 @@ GameObject:
   - component: {fileID: 1938698032}
   - component: {fileID: 1938698031}
   - component: {fileID: 1938698030}
+  - component: {fileID: 1938698033}
   - component: {fileID: 1938698029}
   m_Layer: 0
   m_Name: Player2
@@ -530,7 +569,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1938698028}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 140b478b86a6eb74ba09279c2a0400bf, type: 3}
+  m_Script: {fileID: 11500000, guid: b8d87f8fe86dff5489c090e8c724fb2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   index: 2
@@ -589,12 +628,12 @@ SpriteRenderer:
   m_SortingLayerID: 1610223073
   m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 4dc334e3e9ac8714a98d7b3db5ff6fd3, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 77ec555d9b111e741ac2c249e3204ca7, type: 3}
   m_Color: {r: 0.7529412, g: 0.1882353, b: 0.27978912, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.04, y: 0.04}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -608,11 +647,29 @@ Transform:
   m_GameObject: {fileID: 1938698028}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 5, y: 5, z: 5}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1938698033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1938698028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c43939ed065a974c99559d0cf91be9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boosting: 0
+  onChair: 0
+  carrying: 0
+  sightRadius: 5
+  playerIndex: 2
+  myInput: {fileID: 286329600}
+  rb: {fileID: 286329601}
 --- !u!1 &2011691434
 GameObject:
   m_ObjectHideFlags: 0
@@ -623,6 +680,7 @@ GameObject:
   - component: {fileID: 2011691438}
   - component: {fileID: 2011691437}
   - component: {fileID: 2011691436}
+  - component: {fileID: 2011691439}
   - component: {fileID: 2011691435}
   m_Layer: 0
   m_Name: Player3
@@ -639,7 +697,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2011691434}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 140b478b86a6eb74ba09279c2a0400bf, type: 3}
+  m_Script: {fileID: 11500000, guid: b8d87f8fe86dff5489c090e8c724fb2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   index: 3
@@ -698,12 +756,12 @@ SpriteRenderer:
   m_SortingLayerID: 1610223073
   m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 4dc334e3e9ac8714a98d7b3db5ff6fd3, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 77ec555d9b111e741ac2c249e3204ca7, type: 3}
   m_Color: {r: 0.7332983, g: 0.1882353, b: 0.7529412, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.04, y: 0.04}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -717,8 +775,26 @@ Transform:
   m_GameObject: {fileID: 2011691434}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 5, y: 5, z: 5}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2011691439
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2011691434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c43939ed065a974c99559d0cf91be9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boosting: 0
+  onChair: 0
+  carrying: 0
+  sightRadius: 5
+  playerIndex: 3
+  myInput: {fileID: 286329600}
+  rb: {fileID: 286329601}
