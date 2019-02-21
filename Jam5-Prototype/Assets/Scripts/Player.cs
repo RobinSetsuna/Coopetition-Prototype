@@ -17,8 +17,60 @@ public class Player : MonoBehaviour {
     [SerializeField] private float sightRadius;
 
     [SerializeField] private int index;
+    [SerializeField] private playerState currentState;
     private Rigidbody2D rb2d;
-    private playerState currentState;
+    public playerState CurrentState
+    {
+        // this allowed to triggger codes when the state switched, directly copied from gamemanager
+        get
+        {
+            return currentState;
+        }
+
+        private set
+        {
+            if (value == currentState)
+            {
+                LogUtility.PrintLogFormat("Player", "{0}, Reset {0}.",index, value);
+            }
+            else
+            {
+                LogUtility.PrintLogFormat("Player", "{0},","Made a transition to {0}.",index, value);
+
+                playerState previousState = currentState;
+                currentState = value;
+                switch (currentState)
+                {
+                    case playerState.Moveable:
+                        //run when playerState transfered to Moveable
+
+                        break;
+                    case playerState.Seated:
+                        //run when playerState transfered to seated
+
+                        break;
+
+                    case playerState.Boosting:
+                        var temp = rb2d.velocity;
+                        // get current move direction
+                        var currentDirection = temp.normalized;
+                        rb2d.AddForce(currentDirection * boostStrength);
+                        // add force to same direction
+                        StartCoroutine(releaseToIdle(boostFreezeDuration));
+                        break;
+
+                    case playerState.Carrying:
+                        // change the speed and duration
+                        speed = 1.5f;
+                        boostFreezeDuration = boostFreezeDuration * 2;
+                        break;
+                }
+            }
+        }
+    }
+
+
+
     // Use this for initialization
     void Start () {
         rb2d = GetComponent<Rigidbody2D>();
@@ -35,7 +87,7 @@ public class Player : MonoBehaviour {
                 if (Input.GetButtonDown("Boost" + index)) {
                     //boosting
                     // TODO may add another code here
-                    Boost();
+                    setPlayerState(playerState.Boosting);
                 }
                 break;
             case playerState.Boosting:
@@ -57,22 +109,11 @@ public class Player : MonoBehaviour {
         transform.position = position;
     }
 
-    public void Boost() {
-
-        // get current move direction
-        var temp = rb2d.velocity;
-        var currentDirection = temp.normalized;
-        rb2d.AddForce(currentDirection * boostStrength);
-        StartCoroutine(releaseToIdle(boostFreezeDuration));
-    }
-    public void Carry() {
-        speed = 1.5f;
-        boostFreezeDuration = boostFreezeDuration * 2;
-    }
-
    public int GetIndex() { return index; }
 
-   public void SetRadius(int overlapped)
+    public void setPlayerState(playerState targetState) { CurrentState = targetState; }
+
+    public void SetRadius(int overlapped)
     {
         sightRadius = 5.0f + ((1 + overlapped) * .25f); //Line of sight radius is increased based on how many other players are within range of this player 
     }
@@ -81,7 +122,7 @@ public class Player : MonoBehaviour {
     IEnumerator releaseToIdle(float duration) {
         yield return new WaitForSeconds(duration);
         if (currentState != playerState.Seated) {
-            currentState = playerState.Moveable;
+            setPlayerState(playerState.Moveable);
             // release the freezing
         }
     }
