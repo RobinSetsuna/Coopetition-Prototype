@@ -124,7 +124,6 @@ GameObject:
   - component: {fileID: 286329602}
   - component: {fileID: 286329601}
   - component: {fileID: 286329604}
-  - component: {fileID: 286329600}
   m_Layer: 0
   m_Name: Player0
   m_TagString: Player
@@ -132,18 +131,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &286329600
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 286329599}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8d87f8fe86dff5489c090e8c724fb2c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  index: 0
 --- !u!50 &286329601
 Rigidbody2D:
   serializedVersion: 4
@@ -234,13 +221,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c43939ed065a974c99559d0cf91be9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boosting: 0
-  onChair: 0
+  speed: 2
+  boostStrength: 0
+  boostFreezeDuration: 0
   carrying: 0
   sightRadius: 5
-  playerIndex: 0
-  myInput: {fileID: 286329600}
-  rb: {fileID: 286329601}
+  index: 0
 --- !u!1 &711712969
 GameObject:
   m_ObjectHideFlags: 0
@@ -330,9 +316,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 249211f220214d041aaecd3581f209e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  smoothTimeY: 0
-  smoothTimeX: 0
-  zoomSensity: 0
+  smoothTimeY: 0.5
+  smoothTimeX: 0.5
+  zoomSensity: 15
   bounds: 0
   maxCameraPos: {x: 0, y: 0, z: 0}
   minCameraPos: {x: 0, y: 0, z: 0}
@@ -350,7 +336,6 @@ GameObject:
   - component: {fileID: 844548773}
   - component: {fileID: 844548772}
   - component: {fileID: 844548775}
-  - component: {fileID: 844548771}
   m_Layer: 0
   m_Name: Player1
   m_TagString: Player
@@ -358,18 +343,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &844548771
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 844548770}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8d87f8fe86dff5489c090e8c724fb2c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  index: 1
 --- !u!50 &844548772
 Rigidbody2D:
   serializedVersion: 4
@@ -460,13 +433,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c43939ed065a974c99559d0cf91be9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boosting: 0
-  onChair: 0
+  speed: 2
+  boostStrength: 0
+  boostFreezeDuration: 0
   carrying: 0
   sightRadius: 5
-  playerIndex: 1
-  myInput: {fileID: 286329600}
-  rb: {fileID: 286329601}
+  index: 1
 --- !u!1 &974709216
 GameObject:
   m_ObjectHideFlags: 0
@@ -553,7 +525,6 @@ GameObject:
   - component: {fileID: 1938698031}
   - component: {fileID: 1938698030}
   - component: {fileID: 1938698033}
-  - component: {fileID: 1938698029}
   m_Layer: 0
   m_Name: Player2
   m_TagString: Player
@@ -561,18 +532,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1938698029
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1938698028}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8d87f8fe86dff5489c090e8c724fb2c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  index: 2
 --- !u!50 &1938698030
 Rigidbody2D:
   serializedVersion: 4
@@ -663,13 +622,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c43939ed065a974c99559d0cf91be9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boosting: 0
-  onChair: 0
+  speed: 2
+  boostStrength: 0
+  boostFreezeDuration: 0
   carrying: 0
   sightRadius: 5
-  playerIndex: 2
-  myInput: {fileID: 286329600}
-  rb: {fileID: 286329601}
+  index: 2
 --- !u!1 &2011691434
 GameObject:
   m_ObjectHideFlags: 0
@@ -681,7 +639,6 @@ GameObject:
   - component: {fileID: 2011691437}
   - component: {fileID: 2011691436}
   - component: {fileID: 2011691439}
-  - component: {fileID: 2011691435}
   m_Layer: 0
   m_Name: Player3
   m_TagString: Player
@@ -689,18 +646,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &2011691435
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2011691434}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8d87f8fe86dff5489c090e8c724fb2c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  index: 3
 --- !u!50 &2011691436
 Rigidbody2D:
   serializedVersion: 4
@@ -791,10 +736,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c43939ed065a974c99559d0cf91be9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boosting: 0
-  onChair: 0
+  speed: 2
+  boostStrength: 0
+  boostFreezeDuration: 0
   carrying: 0
   sightRadius: 5
-  playerIndex: 3
-  myInput: {fileID: 286329600}
-  rb: {fileID: 286329601}
+  index: 3
