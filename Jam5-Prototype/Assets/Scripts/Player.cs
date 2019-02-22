@@ -32,11 +32,11 @@ public class Player : MonoBehaviour {
         {
             if (value == currentState)
             {
-                LogUtility.PrintLogFormat("Player", "{0}, Reset {0}.",index, value);
+                LogUtility.PrintLogFormat("Player Reset {0}.", value.ToString());
             }
             else
             {
-                LogUtility.PrintLogFormat("Player", "{0},","Made a transition to {0}.",index, value);
+                LogUtility.PrintLogFormat("PlayerMade a transition to {0}.", value.ToString());
 
                 playerState previousState = currentState;
                 currentState = value;

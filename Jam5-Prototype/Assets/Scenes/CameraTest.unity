@@ -207,7 +207,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &94655034
 Transform:
   m_ObjectHideFlags: 0
@@ -389,7 +389,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
+  m_LinearDrag: 1.5
   m_AngularDrag: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
@@ -474,8 +474,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 2
-  boostStrength: 0
-  boostFreezeDuration: 0
+  boostStrength: 600
+  boostFreezeDuration: 1
   IsCarrying: 0
   IsSeating: 0
   sightRadius: 0
@@ -708,8 +708,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec66dc1d6b8eb134bbad3f5e21e81936, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  smoothTimeY: 0.5
-  smoothTimeX: 0.5
+  smoothTimeY: 1
+  smoothTimeX: 1
   zoomSensity: 15
   bounds: 0
   maxCameraPos: {x: 0, y: 0, z: 0}
@@ -823,8 +823,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 2
-  boostStrength: 0
-  boostFreezeDuration: 0
+  boostStrength: 600
+  boostFreezeDuration: 1
   IsCarrying: 0
   IsSeating: 0
   sightRadius: 0
@@ -842,7 +842,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
+  m_LinearDrag: 1.5
   m_AngularDrag: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
@@ -1322,7 +1322,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
+  m_LinearDrag: 1.5
   m_AngularDrag: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
@@ -1407,8 +1407,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 2
-  boostStrength: 0
-  boostFreezeDuration: 0
+  boostStrength: 600
+  boostFreezeDuration: 1
   IsCarrying: 0
   IsSeating: 0
   sightRadius: 0
@@ -1535,7 +1535,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
+  m_LinearDrag: 1.5
   m_AngularDrag: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
@@ -1620,8 +1620,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 2
-  boostStrength: 0
-  boostFreezeDuration: 0
+  boostStrength: 600
+  boostFreezeDuration: 1
   IsCarrying: 0
   IsSeating: 0
   sightRadius: 0
