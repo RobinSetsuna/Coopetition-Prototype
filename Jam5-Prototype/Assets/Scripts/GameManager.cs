@@ -114,7 +114,7 @@ public class GameManager : MonoBehaviour {
     {
         //set initial game state
         CurrentGameState = GameState.Initial;
-
+        //initial player score 
         playerScore = new Dictionary<string, int>
         {
             { "Player0", 0 },
@@ -122,7 +122,7 @@ public class GameManager : MonoBehaviour {
             { "Player2", 0 },
             { "Player3", 0 }
         };
-
+        //initial current round index
         roundIndex = 1;
         
         LightAura._instance.Enable();
@@ -170,12 +170,16 @@ public class GameManager : MonoBehaviour {
             LogUtility.PrintLogFormat("GameManager", "ChairDropped");
         else
             LogUtility.PrintLogFormat("GameManager", "Stop Chair Timer for New Round");
+            LogUtility.PrintLogFormat("GameManager", "Stop Chair Timer for New Round");
 
-        isChairTimerOn = false;       
+        isChairTimerOn = false;
         //drop the chair////////////////
         //DropChair.Invoke();  
         //decrese hold time on every drop
-        chairHoldTime = currentChairHoldTime - chairHoldTimeDecOnDrop;
+        if (currentChairHoldTime - chairHoldTimeDecOnDrop < minChairHoldTime)
+            chairHoldTime = minChairHoldTime;
+        else
+            chairHoldTime = currentChairHoldTime - chairHoldTimeDecOnDrop;
         yield return null;
     }
 
@@ -258,8 +262,6 @@ public class GameManager : MonoBehaviour {
     ///////////////// For other script to call///////////////////////
     public void EndCurrentRound()        //each player has a string id, like Player1, Player2, Player3 ...
     {
-        if (isChairTimerOn)
-            StopCoroutine(ChairTimer());
         UpdatePlayerScore();
         CurrentGameState = GameState.End;     
     }
