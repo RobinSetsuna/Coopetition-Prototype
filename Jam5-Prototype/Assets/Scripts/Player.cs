@@ -13,13 +13,14 @@ public class Player : MonoBehaviour {
     [SerializeField] private float boostStrength;
     [SerializeField] private float boostFreezeDuration;
 
-    [SerializeField] private bool IsCarrying;
-    [SerializeField] private bool IsSeating;
+    [SerializeField] private bool isCarrying;
+    [SerializeField] private bool isSeating;
     [SerializeField] private float sightRadius;
 
     [SerializeField] private int index;
     [SerializeField] private playerState currentState;
     private Rigidbody2D rb2d;
+
     public playerState CurrentState
     {
         // this allowed to triggger codes when the state switched, directly copied from gamemanager
@@ -75,8 +76,8 @@ public class Player : MonoBehaviour {
     // Use this for initialization
     void Start () {
         rb2d = GetComponent<Rigidbody2D>();
-        IsCarrying = false;
-        IsSeating = false;
+        isCarrying = false;
+        isSeating = false;
         currentState = playerState.Moveable;
 	}
 	
@@ -132,12 +133,20 @@ public class Player : MonoBehaviour {
 
     //when player finds the chair
     private void OnTriggerEnter2D(Collider2D collider)
-    {
-        LogUtility.PrintLogFormat("Player", "Find Chair!");
+    {        
         if (collider.tag == "Chair")
-        {
-            IsCarrying = true;
-            GameManager.Instance.ChairFound();
+        {           
+            if (GameManager.Instance.PlayerOnChair == null)
+            {
+                LogUtility.PrintLogFormat("Player", "{0} Sit on Chair!", gameObject.name);
+                GameManager.Instance.SitOnChair(gameObject.name);             
+                //Todo: Disable movement
+            }
+            else if (GameManager.Instance.PlayerCarryChair == null)
+            {
+                LogUtility.PrintLogFormat("Player", "{0} Carry Chair!", gameObject.name);
+                GameManager.Instance.CarryChair(gameObject.name);
+            }
         }
     }
     //when player hit player
@@ -145,10 +154,10 @@ public class Player : MonoBehaviour {
     {
         if (collision.transform.tag == "Player")
         {
-            if (collision.transform.GetComponent<Player>().IsCarrying)
+            if (GameManager.Instance.PlayerCarryChair == collision.transform.name)
             {
                 GameManager.Instance.PlayerHit();
-                LogUtility.PrintLogFormat("Player", "Hit Carrying player");
+                LogUtility.PrintLogFormat("Player", "player hit");
             }
         }
     }
