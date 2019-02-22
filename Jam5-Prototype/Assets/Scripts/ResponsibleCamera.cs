@@ -97,7 +97,7 @@ public class ResponsibleCamera : MonoBehaviour {
 					if(lastZoomIn + 0.5f < Time.unscaledTime && camera.orthographicSize < maxCameraSize)
 					{
 						//gameObject.GetComponent<Camera>().orthographicSize += 0.05f;
-						camera.orthographicSize = Mathf.SmoothDamp(camera.orthographicSize, camera.orthographicSize + 2f, ref tempVelocity,smoothTimeX);	
+						camera.orthographicSize = Mathf.SmoothDamp(camera.orthographicSize, camera.orthographicSize + 4f, ref tempVelocity,smoothTimeX);	
 						lastZoomOut = Time.unscaledTime;
 					}
 					
