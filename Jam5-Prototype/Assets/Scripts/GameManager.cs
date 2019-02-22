@@ -99,7 +99,7 @@ public class GameManager : MonoBehaviour {
         };
 
         roundIndex = 1;
-
+        LightAura._instance.Enable();
     }
 
     void Awake()
