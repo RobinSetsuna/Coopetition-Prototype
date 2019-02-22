@@ -17,7 +17,7 @@ public class LightAura : MonoBehaviour
 	private bool active;
 	public static LightAura _instance;
 	// Use this for initialization
-	void Start ()
+	void Awake ()
 	{
 		_instance = this;
 		// get all four players light Aura
