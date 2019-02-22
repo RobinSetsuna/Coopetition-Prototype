@@ -50,6 +50,7 @@ public class ResponsibleCamera : MonoBehaviour {
 	private Vector2 currentSmallestWindow; // position of camera on lower left corner
 	private Vector2 currentLargestWindow; // position of camera on upper upper corner
 	
+	private bool zoomInChasing; // the need of chasing character for a while 
 	private CameraState currentState = CameraState.Idle;
 	void Start ()
 	{
@@ -70,6 +71,7 @@ public class ResponsibleCamera : MonoBehaviour {
 		switch (currentState)
 		{
 			case CameraState.Idle:
+				
 				float posy = transform.position.y;
 				float posx = transform.position.x;
 				getPlayerBoundary(); // get two players boundary, the smallest and largest;
@@ -79,38 +81,57 @@ public class ResponsibleCamera : MonoBehaviour {
 
 				Vector2 compareLargest = (currentLargestPlayer - currentLargestWindow);
 				Vector2 compareSmallest = (currentSmallestPlayer - currentSmallestWindow);
-				if (compareLargest.x > 0 || compareLargest.y > 0)
+				if (zoomInChasing)
 				{
-					// if one player 's position even larger than the bounds;
-					// give the breath time between zoom out and in
-					if (lastZoomIn + 0.5f < Time.unscaledTime && camera.orthographicSize < maxCameraSize)
+					camera.orthographicSize = Mathf.SmoothDamp(camera.orthographicSize, camera.orthographicSize + 4f, ref tempVelocity,smoothTimeX);
+					if (compareLargest.x + camera.orthographicSize * 0.15 < 0
+					    && compareLargest.y + camera.orthographicSize * 0.15 < 0
+					    && compareSmallest.x - camera.orthographicSize * 0.15 > 0
+					    && compareSmallest.y - camera.orthographicSize * 0.15 > 0)
 					{
-						//camera.orthographicSize += 0.05f;
-						camera.orthographicSize = Mathf.SmoothDamp(camera.orthographicSize, camera.orthographicSize + 2f, ref tempVelocity,smoothTimeX);	
-						lastZoomOut = Time.unscaledTime;
-						
+						zoomInChasing = false;
 					}
-					
-				}else if (compareSmallest.x < 0 || compareSmallest.y < 0)
+				}
+				else
 				{
-					// or one player 's position even larger than the bounds;
-					if(lastZoomIn + 0.5f < Time.unscaledTime && camera.orthographicSize < maxCameraSize)
+					if (compareLargest.x > 0 || compareLargest.y > 0)
 					{
-						//gameObject.GetComponent<Camera>().orthographicSize += 0.05f;
-						camera.orthographicSize = Mathf.SmoothDamp(camera.orthographicSize, camera.orthographicSize + 4f, ref tempVelocity,smoothTimeX);	
-						lastZoomOut = Time.unscaledTime;
+						// if one player 's position even larger than the bounds;
+						// give the breath time between zoom out and in
+						if (lastZoomIn + 0.5f < Time.unscaledTime && camera.orthographicSize < maxCameraSize)
+						{
+							//camera.orthographicSize += 0.05f;
+							camera.orthographicSize = Mathf.SmoothDamp(camera.orthographicSize,
+								camera.orthographicSize + 4f, ref tempVelocity, smoothTimeX);
+							lastZoomOut = Time.unscaledTime;
+							zoomInChasing = true;
+						}
+
 					}
-					
+					else if (compareSmallest.x < 0 || compareSmallest.y < 0)
+					{
+						// or one player 's position even larger than the bounds;
+						if (lastZoomIn + 0.5f < Time.unscaledTime && camera.orthographicSize < maxCameraSize)
+						{
+							//gameObject.GetComponent<Camera>().orthographicSize += 0.05f;
+							camera.orthographicSize = Mathf.SmoothDamp(camera.orthographicSize,
+								camera.orthographicSize + 4f, ref tempVelocity, smoothTimeX);
+							lastZoomOut = Time.unscaledTime;
+							zoomInChasing = true;
+						}
+
+					}
+					else if (playerDistance + zoomSensity < cameraBound && lastZoomOut + 2f < Time.unscaledTime)
+					{
+						// we are safe to zoom in now
+						//camera.orthographicSize -= 0.03f;
+						camera.orthographicSize = Mathf.SmoothDamp(camera.orthographicSize,
+							camera.orthographicSize - 4f, ref tempVelocity, smoothTimeX * 1.5f);
+						lastZoomIn = Time.unscaledTime;
+					}
 				}
-				else if (playerDistance + zoomSensity < cameraBound && lastZoomOut + 2f < Time.unscaledTime)
-				{
-					// we are safe to zoom in now
-					//camera.orthographicSize -= 0.03f;
-					camera.orthographicSize = Mathf.SmoothDamp(camera.orthographicSize, camera.orthographicSize - 6f, ref tempVelocity,smoothTimeX*2);	
-					lastZoomIn = Time.unscaledTime;
-				}
-		
-					
+
+
 				Vector2 center = new Vector2((currentSmallestPlayer.x+currentLargestPlayer.x)/2,(currentSmallestPlayer.y+currentLargestPlayer.y)/2);
 				posx = Mathf.SmoothDamp(transform.position.x,center.x, ref velocity.x,smoothTimeX);
 				posy = Mathf.SmoothDamp(transform.position.y,center.y, ref velocity.y, smoothTimeY);
@@ -233,8 +254,10 @@ public class ResponsibleCamera : MonoBehaviour {
 		// Screens coordinate corner location
 		var camera = GetComponent<Camera>();
 		//var upperLeftScreen = new Vector3(Screen.width*0.15f, Screen.height*0.75f, 0 );
-		var upperRightScreen = new Vector3(Screen.width*0.90f + camera.orthographicSize*8, Screen.height*0.90f + camera.orthographicSize*4, 0);
-		var lowerLeftScreen = new Vector3(Screen.width*0.10f - camera.orthographicSize*8, Screen.height*0.10f - camera.orthographicSize*4, 0);
+//		var upperRightScreen = new Vector3(Screen.width*0.90f + camera.orthographicSize*8, Screen.height*0.90f + camera.orthographicSize*4, 0);
+//		var lowerLeftScreen = new Vector3(Screen.width*0.10f - camera.orthographicSize*8, Screen.height*0.10f - camera.orthographicSize*4, 0);
+		var upperRightScreen = new Vector3(Screen.width*0.80f + camera.orthographicSize*8, Screen.height*0.80f + camera.orthographicSize*4, 0);
+		var lowerLeftScreen = new Vector3(Screen.width*0.20f - camera.orthographicSize*8, Screen.height*0.20f - camera.orthographicSize*4, 0);
 		//var lowerRightScreen = new Vector3(Screen.width*0.85f, Screen.height*0.25f, 0);
    
 		//Corner locations in world coordinates
