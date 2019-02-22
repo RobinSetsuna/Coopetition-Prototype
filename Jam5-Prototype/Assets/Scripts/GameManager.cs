@@ -29,7 +29,10 @@ public class GameManager : MonoBehaviour {
 
     private float chairHoldTime;
     private int roundIndex;
+    private bool isChairTimerOn;
 
+    UnityEvent DropChair;
+    UnityEvent Highlight;
 
     public GameState CurrentGameState
     {
@@ -54,6 +57,7 @@ public class GameManager : MonoBehaviour {
                 {
                     case GameState.Initial:
                         chairHoldTime = initialChairHoldTime;
+                        isChairTimerOn = false;
                         //Random generate end point, player born point, chair point
                         //generate black fog
                         CurrentGameState = GameState.Searching;
@@ -130,33 +134,24 @@ public class GameManager : MonoBehaviour {
 
     IEnumerator ChairTimer()
     {
+        isChairTimerOn = true;
         LogUtility.PrintLogFormat("GameManager", "EnterChairTimer and Current Hold Time {0}", chairHoldTime);
         float currentChairHoldTime = chairHoldTime;
-        while(CurrentGameState == GameState.Battle)
+
+        while(CurrentGameState == GameState.Battle && chairHoldTime > 0)
         {
-            if (chairHoldTime > 0)
-            {
-                chairHoldTime -= Time.deltaTime;
-                GameObject.Find("Text_1").GetComponent<Text>().text = chairHoldTime.ToString();
-                yield return new WaitForEndOfFrame();
-            }
-            else
-            {
-                LogUtility.PrintLogFormat("GameManager", "ChairDropped");
-                /////////////Todo: drop the chair////////////////
-
-
-
-
-
-
-
-
-
-                chairHoldTime = currentChairHoldTime - chairHoldTimeDecOnDrop;
-                break;
-            }
+            chairHoldTime -= Time.deltaTime;
+            GameObject.Find("Text_1").GetComponent<Text>().text = chairHoldTime.ToString();
+            yield return new WaitForEndOfFrame();  
         }
+
+        LogUtility.PrintLogFormat("GameManager", "ChairDropped");
+
+        isChairTimerOn = false;       
+        //drop the chair////////////////
+        DropChair.Invoke();  
+        //decrese hold time on every drop
+        chairHoldTime = currentChairHoldTime - chairHoldTimeDecOnDrop;
         yield return null;
     }
 
@@ -174,15 +169,8 @@ public class GameManager : MonoBehaviour {
             else
             {
                 LogUtility.PrintLogFormat("GameManager", "Highlight the chair");
-                ///////////Todo: Hightlight the chair///////////////
-
-
-
-
-
-
-
-
+                //Hightlight the chair///////////////
+                Highlight.Invoke();
                 break;
             }
             yield return null;
@@ -255,13 +243,10 @@ public class GameManager : MonoBehaviour {
             CurrentGameState = GameState.Battle;
         StartCoroutine(ChairTimer());
     }
-    public void ChairGet()
-    {
-        StartCoroutine(ChairTimer());
-    }
 
     public void PlayerHit()
     {
-        chairHoldTime -= chairHoldTimeDecOnHit;
+        if(isChairTimerOn)
+            chairHoldTime -= chairHoldTimeDecOnHit;
     }
 }
