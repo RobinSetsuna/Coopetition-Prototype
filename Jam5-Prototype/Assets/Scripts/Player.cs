@@ -13,7 +13,8 @@ public class Player : MonoBehaviour {
     [SerializeField] private float boostStrength;
     [SerializeField] private float boostFreezeDuration;
 
-    [SerializeField] private bool carrying;
+    [SerializeField] private bool IsCarrying;
+    [SerializeField] private bool IsSeating;
     [SerializeField] private float sightRadius;
 
     [SerializeField] private int index;
@@ -74,6 +75,8 @@ public class Player : MonoBehaviour {
     // Use this for initialization
     void Start () {
         rb2d = GetComponent<Rigidbody2D>();
+        IsCarrying = false;
+        IsSeating = false;
         currentState = playerState.Moveable;
 	}
 	
@@ -124,6 +127,29 @@ public class Player : MonoBehaviour {
         if (currentState != playerState.Seated) {
             setPlayerState(playerState.Moveable);
             // release the freezing
+        }
+    }
+
+    //when player finds the chair
+    private void OnTriggerEnter2D(Collider2D collider)
+    {
+        LogUtility.PrintLogFormat("Player", "Find Chair!");
+        if (collider.tag == "Chair")
+        {
+            IsCarrying = true;
+            GameManager.Instance.ChairFound();
+        }
+    }
+    //when player hit player
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.transform.tag == "Player")
+        {
+            if (collision.transform.GetComponent<Player>().IsCarrying)
+            {
+                GameManager.Instance.PlayerHit();
+                LogUtility.PrintLogFormat("Player", "Hit Carrying player");
+            }
         }
     }
 }
