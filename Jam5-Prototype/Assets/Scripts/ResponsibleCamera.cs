@@ -83,7 +83,7 @@ public class ResponsibleCamera : MonoBehaviour {
 				Vector2 compareSmallest = (currentSmallestPlayer - currentSmallestWindow);
 				if (zoomInChasing)
 				{
-					camera.orthographicSize = Mathf.SmoothDamp(camera.orthographicSize, camera.orthographicSize + 8f, ref tempVelocity,smoothTimeX);
+					camera.orthographicSize = Mathf.SmoothDamp(camera.orthographicSize, camera.orthographicSize + 4f, ref tempVelocity,smoothTimeX);
 					if (compareLargest.x + camera.orthographicSize * 0.15 < 0
 					    && compareLargest.y + camera.orthographicSize * 0.15 < 0
 					    && compareSmallest.x - camera.orthographicSize * 0.15 > 0

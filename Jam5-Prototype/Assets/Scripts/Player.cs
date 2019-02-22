@@ -21,6 +21,7 @@ public class Player : MonoBehaviour {
     [SerializeField] private playerState currentState;
     private Rigidbody2D rb2d;
 
+    private Animator anim;
     public playerState CurrentState
     {
         // this allowed to triggger codes when the state switched, directly copied from gamemanager
@@ -79,7 +80,8 @@ public class Player : MonoBehaviour {
         isCarrying = false;
         isSeating = false;
         currentState = playerState.Moveable;
-	}
+        anim = GetComponent<Animator>();
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -87,6 +89,8 @@ public class Player : MonoBehaviour {
             case playerState.Moveable:
                 float h = Input.GetAxis("Horizontal" + index);
                 float v = Input.GetAxis("Vertical" + index);
+                anim.SetFloat("h",h);
+                anim.SetFloat("v",v);
                 rb2d.velocity = new Vector2(h * speed, v * speed);
                 if (Input.GetButtonDown("Boost" + index)) {
                     //boosting
