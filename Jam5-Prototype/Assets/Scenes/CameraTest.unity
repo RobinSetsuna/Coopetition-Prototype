@@ -757,7 +757,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   smoothTimeY: 1
   smoothTimeX: 1
-  zoomSensity: 15
+  zoomSensity: 10
   bounds: 0
   maxCameraPos: {x: 0, y: 0, z: 0}
   minCameraPos: {x: 0, y: 0, z: 0}
