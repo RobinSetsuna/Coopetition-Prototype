@@ -39,8 +39,6 @@ public class Player : MonoBehaviour {
             else
             {
                 LogUtility.PrintLogFormat("PlayerMade a transition to {0}.", value.ToString());
-
-                playerState previousState = currentState;
                 currentState = value;
                 switch (currentState)
                 {
