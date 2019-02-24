@@ -32,6 +32,12 @@ public class GameManager : MonoBehaviour {
     private float chairHoldTime;
     private int roundIndex;
     private bool isChairTimerOn;
+    private GameObject chairs;
+    private GameObject exits;
+    private GameObject player0;
+    private GameObject player1;
+    private GameObject player2;
+    private GameObject player3;
     public GameObject blackMask;
     public GameObject roundText;
     public GameObject roundResultText;
@@ -86,7 +92,6 @@ public class GameManager : MonoBehaviour {
                         PlayerOnChair = null;
                         PlayerCarryChair = null;
                         Spawn();
-                        //generate black fog
                         blackMask.SetActive(true);
                         CurrentGameState = GameState.Searching;
                         break;
@@ -96,11 +101,11 @@ public class GameManager : MonoBehaviour {
                         StartCoroutine(ChairHoldTimeDecreaser());
                         break;
                     case GameState.Battle:
-                        //Disactivate black fog
                         blackMask.SetActive(false);
                         break;
                     case GameState.End:
                         //Distroy former points and black fog
+                        ActiveOption(false);
                         roundIndex += 1;
                         if (roundIndex % (totalRounds + 1) == 0)
                         {
@@ -136,16 +141,32 @@ public class GameManager : MonoBehaviour {
     void Start()
     {
         //initial current round index
-        roundIndex = 4;
+        roundIndex = 1;
+
+
+        //Random generate end point, player born point, chair point
+        chairs = Instantiate(this.chair, GameObject.Find("Level").transform);
+        exits = Instantiate(exit, GameObject.Find("Level").transform);   
+        player0 = Instantiate(players[0]);
+        player1 = Instantiate(players[1]);
+        player2 = Instantiate(players[2]);
+        player3 = Instantiate(players[3]);
+        ResponsibleCamera._instance.SetPlayers();
+        player0.GetComponentInChildren<PersonalIndicator>().setTarget(chairs.transform);
+        player1.GetComponentInChildren<PersonalIndicator>().setTarget(chairs.transform);
+        player2.GetComponentInChildren<PersonalIndicator>().setTarget(chairs.transform);
+        player3.GetComponentInChildren<PersonalIndicator>().setTarget(chairs.transform);
+        ActiveOption(false);
+
         //set initial game state
         CurrentGameState = GameState.Initial;
         //initial player score 
         playerScore = new Dictionary<string, int>
         {
-            { "Player0", 0 },
-            { "Player1", 0 },
-            { "Player2", 0 },
-            { "Player3", 0 }
+            { "Player0(Clone)", 0 },
+            { "Player1(Clone)", 0 },
+            { "Player2(Clone)", 0 },
+            { "Player3(Clone)", 0 }
         };
         
         
@@ -193,7 +214,6 @@ public class GameManager : MonoBehaviour {
         if(CurrentGameState != GameState.End)
             LogUtility.PrintLogFormat("GameManager", "ChairDropped");
         else
-            LogUtility.PrintLogFormat("GameManager", "Stop Chair Timer for New Round");
             LogUtility.PrintLogFormat("GameManager", "Stop Chair Timer for New Round");
 
         isChairTimerOn = false;
@@ -310,33 +330,35 @@ public class GameManager : MonoBehaviour {
             buttonText.GetComponent<Text>().text = "Quit Game";
         }
         title.GetComponent<Text>().text = t;
-        roundResultText.GetComponent<Text>().text = "Player0 Score:" + playerScore["Player0"] + "\n" +
-                                                    "Player1 Score:" + playerScore["Player1"] + "\n" +
-                                                    "Player2 Score:" + playerScore["Player2"] + "\n" +
-                                                    "Player3 Score:" + playerScore["Player3"];
+        roundResultText.GetComponent<Text>().text = "Player0 Score:" + playerScore["Player0(Clone)"] + "\n" +
+                                                    "Player1 Score:" + playerScore["Player1(Clone)"] + "\n" +
+                                                    "Player2 Score:" + playerScore["Player2(Clone)"] + "\n" +
+                                                    "Player3 Score:" + playerScore["Player3(Clone)"];
         roundResultText.SetActive(true);
     }
 
     private void Spawn()
     {
-        //Random generate end point, player born point, chair point
-        Transform[] t = pairs.transform.GetChild(0).GetComponentsInChildren<Transform>();
-        //start point
-        var temp = Instantiate(chair, t[1].position, Quaternion.identity, GameObject.Find("Level").transform);
-        //end point
-        Instantiate(exit, t[2].position, Quaternion.identity, GameObject.Find("Level").transform);
-        //player 0
-        var player1 = Instantiate(players[0], t[3].position, Quaternion.identity);
-        //player 1
-        Instantiate(players[1], t[4].position, Quaternion.identity);
-        //player 2
-        Instantiate(players[2], t[5].position, Quaternion.identity);
-        //player 3
-        Instantiate(players[3], t[6].position, Quaternion.identity);
-        ResponsibleCamera._instance.SetPlayers();
-        player1.GetComponentInChildren<PersonalIndicator>().setTarget(temp.transform);
+        int index = roundIndex - 1;
+        Transform[] t = pairs.transform.GetChild(index).GetComponentsInChildren<Transform>();
+        chairs.transform.position = t[1].position;
+        exits.transform.position = t[2].position;
+        player0.transform.position = t[3].position;
+        player1.transform.position = t[4].position;
+        player2.transform.position = t[5].position;
+        player3.transform.position = t[6].position;
+        ActiveOption(true);
     }
 
+    private void ActiveOption(bool b)
+    {
+        chairs.SetActive(b);
+        exits.SetActive(b);
+        player0.SetActive(b);
+        player1.SetActive(b);
+        player2.SetActive(b);
+        player3.SetActive(b);
+    }
     ///////////////// For other script to call///////////////////////
     public void EndCurrentRound()        //each player has a string id, like Player1, Player2, Player3 ...
     {
