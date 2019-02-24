@@ -60,7 +60,8 @@ public class PersonalIndicator : MonoBehaviour
         
         if (m_outOfScreen)
         {
-            Target.gameObject.GetComponent<ItemIndicator>().Disable();
+            if(GameManager.Instance.highlight != true)
+                Target.gameObject.GetComponent<ItemIndicator>().Disable();
             // TODO change here to adapt the game manager
             var distance = (Target.position - Player.position).magnitude;
             if (distance < 3f)
@@ -70,9 +71,12 @@ public class PersonalIndicator : MonoBehaviour
             {
                 if (!Indicator.GetComponent<SpriteRenderer>().enabled)
                 {
-                    Indicator.GetComponent<SpriteRenderer>().enabled = true;
+                    if (GameManager.Instance.CurrentGameState == GameState.Battle)
+                        Indicator.GetComponent<SpriteRenderer>().enabled = false;
+                    else
+                        Indicator.GetComponent<SpriteRenderer>().enabled = true;
                 }
-                var YChange = Mathf.Clamp(distance/12, 0.0f,2.0f);
+                    var YChange = Mathf.Clamp(distance/12, 0.0f,2.0f);
                 var ScaleChange = Mathf.Clamp(4f/(distance*10), 0f, 0.2f);
                 var ratio = Mathf.Clamp(100f/(distance), 2f, 4f);
                 ScaleChange = Mathf.SmoothDamp(Indicator.transform.localScale.y, ScaleChange + originalScale, ref velocity,
@@ -97,8 +101,12 @@ public class PersonalIndicator : MonoBehaviour
             {
                 if (!Indicator.GetComponent<SpriteRenderer>().enabled)
                 {
-                    Indicator.GetComponent<SpriteRenderer>().enabled = true;
+                    if (GameManager.Instance.CurrentGameState == GameState.Battle)
+                        Indicator.GetComponent<SpriteRenderer>().enabled = false;
+                    else
+                        Indicator.GetComponent<SpriteRenderer>().enabled = true;
                 }
+                Indicator.GetComponent<SpriteRenderer>().enabled = false;
                 var YChange = Mathf.Clamp(distance/12, 0.0f,2.0f);
                 var ScaleChange = Mathf.Clamp(4f/(distance*10), 0f, 0.2f);
                 var ratio = Mathf.Clamp(100f/(distance), 2f, 4f);

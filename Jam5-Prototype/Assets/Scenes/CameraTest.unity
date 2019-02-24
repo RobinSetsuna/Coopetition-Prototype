@@ -914,7 +914,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentGameState: 0
   roundDuration: 120
-  maxSearchTime: 30
+  maxSearchTime: 10
   minChairHoldTime: 10
   totalRounds: 5
   initialChairHoldTime: 30
@@ -923,6 +923,7 @@ MonoBehaviour:
   chairHoldTimeDecOnDrop: 2
   playerOnChair: 
   playerCarryChair: 
+  highlight: 0
   blackMask: {fileID: 94655033}
   roundText: {fileID: 573384668}
   roundResultText: {fileID: 884918728}
@@ -1293,6 +1294,10 @@ Prefab:
     - target: {fileID: 4256077086457158, guid: cbbd6edb8539f7941a6ca01482130332, type: 2}
       propertyPath: m_LocalPosition.y
       value: 2.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 4035336905944390, guid: cbbd6edb8539f7941a6ca01482130332, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: -4.4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cbbd6edb8539f7941a6ca01482130332, type: 2}
