@@ -38,6 +38,10 @@ public class GameManager : MonoBehaviour {
     public GameObject info;
     public GameObject title;
     public GameObject buttonText;
+    public GameObject pairs;
+    public GameObject [] players;
+    public GameObject exit;
+    public GameObject chair;
 
     UnityEvent DropChair;
     UnityEvent Highlight;
@@ -75,13 +79,13 @@ public class GameManager : MonoBehaviour {
                 currentGameState = value;
                 switch (currentGameState)
                 {
-                    case GameState.Initial:
+                    case GameState.Initial:                  
                         roundText.GetComponent<Text>().text = "Round" + roundIndex;
                         chairHoldTime = initialChairHoldTime;
                         isChairTimerOn = false;
                         PlayerOnChair = null;
                         PlayerCarryChair = null;
-                        //Random generate end point, player born point, chair point
+                        Spawn();
                         //generate black fog
                         blackMask.SetActive(true);
                         CurrentGameState = GameState.Searching;
@@ -311,6 +315,26 @@ public class GameManager : MonoBehaviour {
                                                     "Player2 Score:" + playerScore["Player2"] + "\n" +
                                                     "Player3 Score:" + playerScore["Player3"];
         roundResultText.SetActive(true);
+    }
+
+    private void Spawn()
+    {
+        //Random generate end point, player born point, chair point
+        Transform[] t = pairs.transform.GetChild(0).GetComponentsInChildren<Transform>();
+        //start point
+        var temp = Instantiate(chair, t[1].position, Quaternion.identity, GameObject.Find("Level").transform);
+        //end point
+        Instantiate(exit, t[2].position, Quaternion.identity, GameObject.Find("Level").transform);
+        //player 0
+        var player1 = Instantiate(players[0], t[3].position, Quaternion.identity);
+        //player 1
+        Instantiate(players[1], t[4].position, Quaternion.identity);
+        //player 2
+        Instantiate(players[2], t[5].position, Quaternion.identity);
+        //player 3
+        Instantiate(players[3], t[6].position, Quaternion.identity);
+        ResponsibleCamera._instance.SetPlayers();
+        player1.GetComponentInChildren<PersonalIndicator>().setTarget(temp.transform);
     }
 
     ///////////////// For other script to call///////////////////////

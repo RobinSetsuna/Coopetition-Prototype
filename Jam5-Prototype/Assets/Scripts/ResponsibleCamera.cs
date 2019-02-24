@@ -58,6 +58,12 @@ public class ResponsibleCamera : MonoBehaviour {
 		maxCameraSize = maxCameraSize == 0?9999:maxCameraSize;
 		_instance = this;
 	}
+
+    public void SetPlayers()
+    {
+        Players = GameObject.FindGameObjectsWithTag("Player");
+    }
+
 	void FixedUpdate()
 	{
 		float x = 0;
