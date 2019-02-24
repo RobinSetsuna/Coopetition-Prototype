@@ -87,6 +87,8 @@ public class Player : MonoBehaviour {
 	void Update () {
         switch (currentState) {
             case playerState.Moveable:
+                if (index == 2 || index == 3)
+                    index += 2;
                 float h = Input.GetAxis("Horizontal" + index);
                 float v = Input.GetAxis("Vertical" + index);
                 anim.SetFloat("h",h);
