@@ -102,6 +102,7 @@ public class GameManager : MonoBehaviour {
                         break;
                     case GameState.Battle:
                         blackMask.SetActive(false);
+                        chairs.GetComponent<ItemIndicator>().Disable();
                         break;
                     case GameState.End:
                         //Distroy former points and black fog

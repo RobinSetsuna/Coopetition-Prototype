@@ -86,8 +86,9 @@ public class PersonalIndicator : MonoBehaviour
         }
         else
         {
-            Target.gameObject.GetComponent<ItemIndicator>().Enable();
-            
+            if (GameManager.Instance.CurrentGameState != GameState.Battle) {
+                Target.gameObject.GetComponent<ItemIndicator>().Enable();
+            }
             var distance = (Target.position - Player.position).magnitude;
             if (distance < 3f)
             {
