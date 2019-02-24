@@ -60,7 +60,8 @@ public class PersonalIndicator : MonoBehaviour
         
         if (m_outOfScreen)
         {
-            Target.gameObject.GetComponent<ItemIndicator>().Disable();
+            if(GameManager.Instance.highlight != true)
+                Target.gameObject.GetComponent<ItemIndicator>().Disable();
             // TODO change here to adapt the game manager
             var distance = (Target.position - Player.position).magnitude;
             if (distance < 3f)

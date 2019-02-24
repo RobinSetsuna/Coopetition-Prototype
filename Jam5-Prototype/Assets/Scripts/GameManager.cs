@@ -38,6 +38,8 @@ public class GameManager : MonoBehaviour {
     private GameObject player1;
     private GameObject player2;
     private GameObject player3;
+    public bool highlight;
+
     public GameObject blackMask;
     public GameObject roundText;
     public GameObject roundResultText;
@@ -50,7 +52,6 @@ public class GameManager : MonoBehaviour {
     public GameObject chair;
 
     UnityEvent DropChair;
-    UnityEvent Highlight;
 
     public string PlayerOnChair
     {
@@ -89,6 +90,7 @@ public class GameManager : MonoBehaviour {
                         roundText.GetComponent<Text>().text = "Round" + roundIndex;
                         chairHoldTime = initialChairHoldTime;
                         isChairTimerOn = false;
+                        highlight = false;
                         PlayerOnChair = null;
                         PlayerCarryChair = null;
                         Spawn();
@@ -212,6 +214,7 @@ public class GameManager : MonoBehaviour {
             GameObject.Find("TextHoldTime").GetComponent<Text>().text = chairHoldTime.ToString();
             yield return new WaitForEndOfFrame();  
         }
+        playerCarryChair = null;
         if(CurrentGameState != GameState.End)
             LogUtility.PrintLogFormat("GameManager", "ChairDropped");
         else
@@ -243,7 +246,8 @@ public class GameManager : MonoBehaviour {
             {
                 LogUtility.PrintLogFormat("GameManager", "Highlight the chair");
                 //Hightlight the chair///////////////
-                //Highlight.Invoke();
+                highlight = true;
+                chairs.GetComponent<ItemIndicator>().Enable();
                 break;
             }
             yield return null;
