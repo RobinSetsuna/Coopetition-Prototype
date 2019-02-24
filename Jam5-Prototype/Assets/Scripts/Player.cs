@@ -19,9 +19,13 @@ public class Player : MonoBehaviour {
 
     [SerializeField] private int index;
     [SerializeField] private playerState currentState;
+    [SerializeField] private GameObject dust;
+    
+    [SerializeField] private GameObject Star;
     private Rigidbody2D rb2d;
     public PersonalIndicator Indicator;
     private Animator anim;
+    private playerState previousState;
     public playerState CurrentState
     {
         // this allowed to triggger codes when the state switched, directly copied from gamemanager
@@ -39,12 +43,16 @@ public class Player : MonoBehaviour {
             else
             {
                 LogUtility.PrintLogFormat("PlayerMade a transition to {0}.", value.ToString());
+                previousState = currentState;
                 currentState = value;
                 switch (currentState)
                 {
                     case playerState.Moveable:
                         //run when playerState transfered to Moveable
-
+                        if (previousState == playerState.Boosting)
+                        {
+                            Star.GetComponent<ParticleSystem>().enableEmission = false;
+                        }
                         break;
                     case playerState.Seated:
                         //run when playerState transfered to seated
@@ -81,6 +89,7 @@ public class Player : MonoBehaviour {
         anim = GetComponent<Animator>();
         Indicator = GetComponentInChildren<PersonalIndicator>();
         Indicator.Initialize();
+        Star.GetComponent<ParticleSystem>().enableEmission = false;
     }
 	
 	// Update is called once per frame
@@ -93,6 +102,15 @@ public class Player : MonoBehaviour {
                 float v = Input.GetAxis("Vertical" + index);
                 anim.SetFloat("h",h);
                 anim.SetFloat("v",v);
+                if (Mathf.Abs(h) < 0.1f && Mathf.Abs(v) < 0.1f)
+                {
+                    dust.GetComponent<ParticleSystem>().enableEmission = false;
+                }
+                else
+                {
+                    dust.GetComponent<ParticleSystem>().enableEmission = true;
+                }
+                
                 rb2d.velocity = new Vector2(h * speed, v * speed);
                 if (Input.GetButtonDown("Boost" + index)) {
                     //boosting
@@ -102,6 +120,7 @@ public class Player : MonoBehaviour {
                 break;
             case playerState.Boosting:
                 // when boosting, freeze all input
+                Star.GetComponent<ParticleSystem>().enableEmission = true;
                 break;
 
             case playerState.Carrying:
