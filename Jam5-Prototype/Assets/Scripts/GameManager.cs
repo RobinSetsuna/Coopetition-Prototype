@@ -104,13 +104,21 @@ public class GameManager : MonoBehaviour {
                             string winner = "nobody";
                             foreach(KeyValuePair<string,int> p in playerScore)
                             {
-                                if (p.Value > max)
+                                if (p.Value >= max)
                                 {
                                     max = p.Value;
                                     winner = p.Key;
-                                }
+                                }                              
                             }
-                            ShowScore("Winner is " + winner + "!");
+                            if(CheckWinner(max))
+                            {
+                                ShowScore("Winner is " + winner + "!");
+                            }
+                            else
+                            {
+                                totalRounds++;
+                                ShowScore("Round End");                              
+                            }
                         }
                         else
                         {
@@ -265,11 +273,28 @@ public class GameManager : MonoBehaviour {
         yield return null;
     }
 
+    private bool CheckWinner(int max)
+    {
+        int temp = 0;
+        foreach (KeyValuePair<string, int> p in playerScore)
+        {
+            if (p.Value == max)
+            {
+                temp++;
+            }
+        }
+        if (temp > 1)
+            return false;
+        else
+            return true;
+    }
+
     private void UpdatePlayerScore()
     {
         playerScore[playerOnChair] += 1;
         playerScore[playerCarryChair] += 2;
     }
+
     private void ShowScore(string t)
     {
         //Debug.Log("player0 score:"+ playerScore["Player0"]);
@@ -303,6 +328,7 @@ public class GameManager : MonoBehaviour {
         StartCoroutine(WaitForSeconds(5f, p + " Carrys the Chair!"));
         
     }
+
     public void SitOnChair(string p)
     {
         if (CurrentGameState != GameState.Battle)
