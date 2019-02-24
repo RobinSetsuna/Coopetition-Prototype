@@ -20,7 +20,7 @@ public class Player : MonoBehaviour {
     [SerializeField] private int index;
     [SerializeField] private playerState currentState;
     private Rigidbody2D rb2d;
-    public PersonalIndicator Indicator;
+
     private Animator anim;
     public playerState CurrentState
     {
@@ -79,8 +79,6 @@ public class Player : MonoBehaviour {
         isSeating = false;
         currentState = playerState.Moveable;
         anim = GetComponent<Animator>();
-        Indicator = GetComponentInChildren<PersonalIndicator>();
-        Indicator.Initialize();
     }
 	
 	// Update is called once per frame
