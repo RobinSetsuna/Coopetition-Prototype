@@ -138,7 +138,7 @@ public class Player : MonoBehaviour {
         transform.position = position;
     }
 
-   public int GetIndex() { return index; }
+    public int GetIndex() { return index; }
 
     public void setPlayerState(playerState targetState) { CurrentState = targetState; }
 
@@ -174,6 +174,7 @@ public class Player : MonoBehaviour {
             }
         }
     }
+    
     //when player hit player
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -182,6 +183,10 @@ public class Player : MonoBehaviour {
             if (GameManager.Instance.PlayerCarryChair == collision.transform.name)
             {
                 GameManager.Instance.PlayerHit();
+                //Bouncing Back
+                var direction = (collision.transform.position - transform.position).normalized;
+                var force = Random.Range(30, 150);
+                collision.gameObject.GetComponent<Rigidbody2D>().AddForce(direction * force); 
                 LogUtility.PrintLogFormat("Player", "player hit");
             }
         }
