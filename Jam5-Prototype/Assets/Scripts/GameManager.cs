@@ -229,7 +229,9 @@ public class GameManager : MonoBehaviour {
         {
             if (player.CurrentState == playerState.Carrying)
             {
+                playerCarryChair = null;
                 player.setPlayerState(playerState.Moveable);
+                StartCoroutine(releaseCoolDown(player.transform.position));
                 break;
             }
         }
@@ -240,7 +242,10 @@ public class GameManager : MonoBehaviour {
             chairHoldTime = currentChairHoldTime - chairHoldTimeDecOnDrop;
         yield return null;
     }
-
+    IEnumerator releaseCoolDown(Vector3 pos) {
+        yield return new WaitForSeconds(0.5f);
+        InstantiateTriggerBox(pos);
+    }
     IEnumerator HighlightTimer()
     {
         LogUtility.PrintLogFormat("GameManager", "EnterHighlightTimer");
