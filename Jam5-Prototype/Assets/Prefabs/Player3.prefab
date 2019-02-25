@@ -245,7 +245,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49a13e7f720cb62498e3e98e2c24cb77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NoramlSpeed: 2
+  NoramlSpeed: 3
   NoramlBoostStrength: 300
   NoramlBoostFreezeDuration: 0.5
   CarrySpeed: 1.7
@@ -257,8 +257,11 @@ MonoBehaviour:
   Star: {fileID: 1667037406342230}
   walking: {fileID: 22100000, guid: 68a6acc1cc00b2240bc6a6ce7e05bacb, type: 2}
   carrying: {fileID: 22100000, guid: 429ea4dc3cdd442418315f256141b62e, type: 2}
+  maxSpeed: 2
+  minSpeed: -2
   Indicator: {fileID: 0}
   seatPoint: {fileID: 224147963567828990}
+  FX: {fileID: 1905930430540326, guid: b96466269562aa841adbc873bce7da42, type: 2}
   seatingBinding: {fileID: 0}
 --- !u!198 &198657625039112550
 ParticleSystem:

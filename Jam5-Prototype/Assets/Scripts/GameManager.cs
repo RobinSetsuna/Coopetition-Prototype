@@ -227,7 +227,7 @@ public class GameManager : MonoBehaviour {
         var players = FindObjectsOfType<Player>();
         foreach (var player in players)
         {
-            if (player.CurrentState == playerState.Seated)
+            if (player.CurrentState == playerState.Carrying)
             {
                 player.setPlayerState(playerState.Moveable);
                 break;

@@ -31,11 +31,16 @@ public class Player : MonoBehaviour {
     
     [SerializeField] private RuntimeAnimatorController walking;
     [SerializeField] private RuntimeAnimatorController carrying;
+    
+    
+    [SerializeField] private float maxSpeed = 2f;
+    [SerializeField] private float minSpeed = -2f;
     private Rigidbody2D rb2d;
     public PersonalIndicator Indicator;
     private Animator anim;
     private playerState previousState;
     [SerializeField] private Transform seatPoint;
+    [SerializeField] private GameObject FX;
     public Transform seatingBinding;
     public playerState CurrentState
     {
@@ -71,7 +76,7 @@ public class Player : MonoBehaviour {
 
                         if (previousState == playerState.Carrying)
                         {
-                            FindChairLeader().seatingBinding = seatPoint;
+                            FindChairLeader().seatingBinding = null;
                         }
 
                         break;
@@ -97,6 +102,7 @@ public class Player : MonoBehaviour {
                         boostFreezeDuration = CarryBoostFreezeDuration;
                         if (previousState == playerState.Boosting)
                         {
+                            previousState = playerState.Carrying;
                             Star.GetComponent<ParticleSystem>().enableEmission = false;
                         }
                         break;
@@ -125,11 +131,15 @@ public class Player : MonoBehaviour {
         switch (currentState) {
             case playerState.Moveable:
                 if (index == 2 || index == 3)
+                {
                     index += 2;
+                }
+                   
                 float h = Input.GetAxis("Horizontal" + index);
                 float v = Input.GetAxis("Vertical" + index);
                 anim.SetFloat("h",h);
                 anim.SetFloat("v",v);
+                physicsInputHelper(h, v);
                 if (Mathf.Abs(h) < 0.1f && Mathf.Abs(v) < 0.1f)
                 {
                     dust.GetComponent<ParticleSystem>().enableEmission = false;
@@ -139,7 +149,7 @@ public class Player : MonoBehaviour {
                     dust.GetComponent<ParticleSystem>().enableEmission = true;
                 }
                 
-                rb2d.velocity = new Vector2(h * speed, v * speed);
+                //rb2d.velocity = new Vector2(h * speed, v * speed);
                 if (Input.GetButtonDown("Boost" + index)) {
                     //boosting
                     // TODO may add another code here
@@ -159,6 +169,7 @@ public class Player : MonoBehaviour {
                 float v1 = Input.GetAxis("Vertical" + index);
                 anim.SetFloat("h",h1);
                 anim.SetFloat("v",v1);
+                physicsInputHelper(h1, v1);
                 if (Mathf.Abs(h1) < 0.1f && Mathf.Abs(v1) < 0.1f)
                 {
                     dust.GetComponent<ParticleSystem>().enableEmission = false;
@@ -168,7 +179,7 @@ public class Player : MonoBehaviour {
                     dust.GetComponent<ParticleSystem>().enableEmission = true;
                 }
                 
-                rb2d.velocity = new Vector2(h1 * speed, v1 * speed);
+                //rb2d.velocity = new Vector2(h1 * speed, v1 * speed);
                 if (Input.GetButtonDown("Boost" + index)) {
                     //boosting
                     // TODO may add another code here
@@ -245,6 +256,87 @@ public class Player : MonoBehaviour {
         }
     }
 
+    private void physicsInputHelper(float h, float v)
+    {
+              
+        // calculate speed on X axis
+        if (Mathf.Abs(rb2d.velocity.x) < maxSpeed )
+        {
+            if (Mathf.Abs(h) > 0.1f)
+            {
+                var direction = Vector3.right * h *speed;
+                if (direction.x * rb2d.velocity.x < 0)
+                {
+                    direction = direction * 2;
+                }
+
+                rb2d.AddForce(direction);
+            }
+            else
+            {
+                // reduce speed,friction
+                var direction = rb2d.velocity.normalized;
+                rb2d.AddForce(new Vector2(-direction.x*10f,0f));
+                //rb2d.AddForce(new Vector2(0f,-direction.y*10f));
+            }
+        }else{
+            if (Mathf.Abs(h) > 0.1f)
+            {
+                //do nothing
+                if (h * rb2d.velocity.x < 0)
+                {
+                    rb2d.AddForce(new Vector2(h*50f,0f));
+                }
+            }
+            else
+            {
+                // reduce speed,friction
+                var direction = rb2d.velocity.normalized;
+                rb2d.AddForce(new Vector2(-direction.x*10f,0f));
+                //rb2d.AddForce(new Vector2(0f,-direction.y*10f));
+            }
+        }
+        
+        
+        // calculate speed on Y axis
+        if (Mathf.Abs(rb2d.velocity.y) < maxSpeed )
+        {
+            if (Mathf.Abs(v) > 0.1f)
+            {
+                var direction = Vector3.up * v *speed;
+                if (direction.y * rb2d.velocity.y < 0)
+                {
+                    direction = direction * 2;
+                }
+
+                rb2d.AddForce(direction);
+            }
+            else
+            {
+                // reduce speed,friction
+                var direction = rb2d.velocity.normalized;
+                rb2d.AddForce(new Vector2(0f,-direction.y*10f));
+                //rb2d.AddForce(new Vector2(0f,-direction.y*10f));
+            }
+        }else{
+            if (Mathf.Abs(v) > 0.1f)
+            {
+                //do nothing
+                if (v * rb2d.velocity.y < 0)
+                {
+                    rb2d.AddForce(new Vector2(0f,h*50f));
+                }
+            }
+            else
+            {
+                // reduce speed,friction
+                var direction = rb2d.velocity.normalized;
+                rb2d.AddForce(new Vector2(0f,-direction.y*10f));
+                //rb2d.AddForce(new Vector2(0f,-direction.y*10f));
+            }
+        }
+    }
+
     private Player FindChairLeader()
     {
         var players = FindObjectsOfType<Player>();
@@ -261,18 +353,36 @@ public class Player : MonoBehaviour {
     //when player hit player
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.transform.tag == "Player")
+        if (collision.transform.tag == "Player" && currentState == playerState.Boosting)
         {
+            var direction = (collision.transform.position - transform.position).normalized;
+            float force = Random.Range(400, 500);
             if (GameManager.Instance.PlayerCarryChair == collision.transform.name)
             {
                 GameManager.Instance.PlayerHit();
                 //Bouncing Back
-                var direction = (collision.transform.position - transform.position).normalized;
-                var force = Random.Range(30, 150);
-                collision.gameObject.GetComponent<Rigidbody2D>().AddForce(direction * force); 
+                force *= 0.8f; 
                 LogUtility.PrintLogFormat("Player", "player hit");
             }
+            collision.gameObject.GetComponent<Rigidbody2D>().AddForce(direction * force);
+            Vector3 midPoint = transform.transform.position + (collision.transform.position - transform.position) / 2;
+            Destroy(Instantiate(FX, midPoint, Quaternion.identity),0.5f);
+            
+            StartCoroutine(Hurt( collision.gameObject.GetComponent<SpriteRenderer>()));
         }
+    }
+
+    IEnumerator Hurt(SpriteRenderer target)
+    {
+        // Let me do the stupid thing here
+        target.color = Color.grey;
+        yield return new WaitForSeconds(0.1f);
+        target.color = Color.white;
+        yield return new WaitForSeconds(0.1f);
+        target.color = Color.grey;
+        yield return new WaitForSeconds(0.1f);
+        target.color = Color.white;
+        //hell yeah Animation, lol
     }
     
 }

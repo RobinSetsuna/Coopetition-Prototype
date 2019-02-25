@@ -243,8 +243,11 @@ MonoBehaviour:
   Star: {fileID: 1388422742011878}
   walking: {fileID: 22100000, guid: 2759165ddc46bd2418e5b5df2ca11b5d, type: 2}
   carrying: {fileID: 22100000, guid: e657752122cf00544aa8fae6a8fd4559, type: 2}
+  maxSpeed: 2
+  minSpeed: -2
   Indicator: {fileID: 0}
   seatPoint: {fileID: 224867761279051292}
+  FX: {fileID: 1905930430540326, guid: b96466269562aa841adbc873bce7da42, type: 2}
   seatingBinding: {fileID: 0}
 --- !u!114 &114441053210383510
 MonoBehaviour:
