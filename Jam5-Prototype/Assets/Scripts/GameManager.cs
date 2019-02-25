@@ -224,6 +224,15 @@ public class GameManager : MonoBehaviour {
         isChairTimerOn = false;
         //drop the chair////////////////
         //DropChair.Invoke();  
+        var players = FindObjectsOfType<Player>();
+        foreach (var player in players)
+        {
+            if (player.CurrentState == playerState.Seated)
+            {
+                player.setPlayerState(playerState.Moveable);
+                break;
+            }
+        }
         //decrese hold time on every drop
         if (currentChairHoldTime - chairHoldTimeDecOnDrop < minChairHoldTime)
             chairHoldTime = minChairHoldTime;

@@ -255,6 +255,11 @@ MonoBehaviour:
   m_FirstSelected: {fileID: 0}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
+--- !u!1 &561871591 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1548963119270410, guid: cbbd6edb8539f7941a6ca01482130332,
+    type: 2}
+  m_PrefabInternal: {fileID: 1544198777}
 --- !u!1 &573384668
 GameObject:
   m_ObjectHideFlags: 0
@@ -826,7 +831,7 @@ MonoBehaviour:
   info: {fileID: 1543357470}
   title: {fileID: 801118615}
   buttonText: {fileID: 1828359824}
-  pairs: {fileID: 0}
+  pairs: {fileID: 561871591}
   players:
   - {fileID: 1022367053293646, guid: 9c6ec21c96d51624cbe2e1ecf828f900, type: 2}
   - {fileID: 1504756231691638, guid: c35ddfc3f86dd80438f544cfe6adbc06, type: 2}
