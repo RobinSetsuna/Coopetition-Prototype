@@ -60,11 +60,11 @@ public class PersonalIndicator : MonoBehaviour
         
         if (m_outOfScreen)
         {
-            if(GameManager.Instance.highlight != true)
-                Target.gameObject.GetComponent<ItemIndicator>().Disable();
+            //if(GameManager.Instance.CurrentGameState != GameState.Battle)
+            //   Target.gameObject.GetComponent<ItemIndicator>().Disable();
             // TODO change here to adapt the game manager
             var distance = (Target.position - Player.position).magnitude;
-            if (distance < 3f)
+            if (distance < 1f)
             {
                 Indicator.GetComponent<SpriteRenderer>().enabled = false;
             }else if (distance > 5f)
@@ -90,11 +90,12 @@ public class PersonalIndicator : MonoBehaviour
         }
         else
         {
-            if (GameManager.Instance.CurrentGameState != GameState.Battle) {
-                Target.gameObject.GetComponent<ItemIndicator>().Enable();
-            }
+            //if (GameManager.Instance.CurrentGameState == GameState.Battle)
+            //{
+            //    Target.gameObject.GetComponent<ItemIndicator>().Enable();
+            //}
             var distance = (Target.position - Player.position).magnitude;
-            if (distance < 3f)
+            if (distance < 1f)
             {
                 Indicator.GetComponent<SpriteRenderer>().enabled = false;
             }else if (distance > 5f)

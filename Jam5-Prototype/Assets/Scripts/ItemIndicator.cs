@@ -17,6 +17,7 @@ public class ItemIndicator : MonoBehaviour
 	{
 		Pointer.SetActive(true);
 	}
+ 
 
 	public void Disable()
 	{
