@@ -15,6 +15,7 @@ public class PersonalIndicator : MonoBehaviour
     
     public Transform Target;
     private Transform Player;
+    private bool Active;
     [SerializeField] private GameObject Indicator;
     [SerializeField] private float SmoothTime;
     void Awake()
@@ -35,6 +36,7 @@ public class PersonalIndicator : MonoBehaviour
     public void Initialize()
     {
         Indicator.GetComponent<SpriteRenderer>().enabled = false;
+        Active = false;
     }
 
     public void setTarget(Transform _target)
@@ -44,6 +46,7 @@ public class PersonalIndicator : MonoBehaviour
     
     public void Enable()
     {
+        Active = true;
         Indicator.GetComponent<SpriteRenderer>().enabled = true;
     }
 
@@ -64,19 +67,21 @@ public class PersonalIndicator : MonoBehaviour
             //   Target.gameObject.GetComponent<ItemIndicator>().Disable();
             // TODO change here to adapt the game manager
             var distance = (Target.position - Player.position).magnitude;
-            if (distance < 1f)
+            if (distance < 3f && Active)
             {
                 Indicator.GetComponent<SpriteRenderer>().enabled = false;
-            }else if (distance > 5f)
+            }
+            else if (distance > 4f && Active)
             {
-                if (!Indicator.GetComponent<SpriteRenderer>().enabled)
-                {
-                    if (GameManager.Instance.CurrentGameState == GameState.Battle)
-                        Indicator.GetComponent<SpriteRenderer>().enabled = false;
-                    else
-                        Indicator.GetComponent<SpriteRenderer>().enabled = true;
-                }
-                    var YChange = Mathf.Clamp(distance/12, 0.0f,2.0f);
+                //if (!Indicator.GetComponent<SpriteRenderer>().enabled)
+                //{
+                //    if (GameManager.Instance.CurrentGameState == GameState.Battle)
+                //        Indicator.GetComponent<SpriteRenderer>().enabled = false;
+                //    else
+                //        Indicator.GetComponent<SpriteRenderer>().enabled = true;
+                //}
+                Indicator.GetComponent<SpriteRenderer>().enabled = true;
+                var YChange = Mathf.Clamp(distance/12, 0.0f,2.0f);
                 var ScaleChange = Mathf.Clamp(4f/(distance*10), 0f, 0.2f);
                 var ratio = Mathf.Clamp(100f/(distance), 2f, 4f);
                 ScaleChange = Mathf.SmoothDamp(Indicator.transform.localScale.y, ScaleChange + originalScale, ref velocity,
@@ -95,19 +100,19 @@ public class PersonalIndicator : MonoBehaviour
             //    Target.gameObject.GetComponent<ItemIndicator>().Enable();
             //}
             var distance = (Target.position - Player.position).magnitude;
-            if (distance < 1f)
+            if (distance < 3f && Active)
             {
                 Indicator.GetComponent<SpriteRenderer>().enabled = false;
-            }else if (distance > 5f)
+            }else if (distance > 4f && Active)
             {
-                if (!Indicator.GetComponent<SpriteRenderer>().enabled)
-                {
-                    if (GameManager.Instance.CurrentGameState == GameState.Battle)
-                        Indicator.GetComponent<SpriteRenderer>().enabled = false;
-                    else
-                        Indicator.GetComponent<SpriteRenderer>().enabled = true;
-                }
-                Indicator.GetComponent<SpriteRenderer>().enabled = false;
+                //if (!Indicator.GetComponent<SpriteRenderer>().enabled)
+                //{
+                //    if (GameManager.Instance.CurrentGameState == GameState.Battle)
+                //        Indicator.GetComponent<SpriteRenderer>().enabled = false;
+                //    else
+                //        Indicator.GetComponent<SpriteRenderer>().enabled = true;
+                //}
+                Indicator.GetComponent<SpriteRenderer>().enabled = true;
                 var YChange = Mathf.Clamp(distance/12, 0.0f,2.0f);
                 var ScaleChange = Mathf.Clamp(4f/(distance*10), 0f, 0.2f);
                 var ratio = Mathf.Clamp(100f/(distance), 2f, 4f);

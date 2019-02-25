@@ -86,7 +86,7 @@ public class GameManager : MonoBehaviour {
                 currentGameState = value;
                 switch (currentGameState)
                 {
-                    case GameState.Initial:                  
+                    case GameState.Initial:
                         roundText.GetComponent<Text>().text = "Round" + roundIndex;
                         chairHoldTime = initialChairHoldTime;
                         isChairTimerOn = false;
@@ -103,8 +103,12 @@ public class GameManager : MonoBehaviour {
                         StartCoroutine(ChairHoldTimeDecreaser());
                         break;
                     case GameState.Battle:
+                        player0.GetComponent<Player>().Indicator.setTarget(exits.transform);
+                        player1.GetComponent<Player>().Indicator.setTarget(exits.transform);
+                        player2.GetComponent<Player>().Indicator.setTarget(exits.transform);
+                        player3.GetComponent<Player>().Indicator.setTarget(exits.transform);
                         blackMask.SetActive(false);
-                        chairs.GetComponent<ItemIndicator>().Disable();
+                        //chairs.GetComponent<ItemIndicator>().Disable();
                         //exits.transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = true;
                         break;
                     case GameState.End:
@@ -141,6 +145,10 @@ public class GameManager : MonoBehaviour {
                         player1.GetComponent<Player>().setPlayerState(playerState.Default);
                         player2.GetComponent<Player>().setPlayerState(playerState.Default);
                         player3.GetComponent<Player>().setPlayerState(playerState.Default);
+                        player0.GetComponent<Player>().Indicator.Initialize();
+                        player1.GetComponent<Player>().Indicator.Initialize();
+                        player2.GetComponent<Player>().Indicator.Initialize();
+                        player3.GetComponent<Player>().Indicator.Initialize();
                         var chairsObj = GameObject.FindGameObjectsWithTag("Chair");
                         foreach (var chairObj in chairsObj) {
                             chairObj.SetActive(false);
@@ -274,9 +282,15 @@ public class GameManager : MonoBehaviour {
             {
                 LogUtility.PrintLogFormat("GameManager", "Highlight the chair");
                 //Hightlight the chair///////////////
+
+                player0.GetComponent<Player>().Indicator.Enable();
+                player1.GetComponent<Player>().Indicator.Enable();
+                player2.GetComponent<Player>().Indicator.Enable();
+                player3.GetComponent<Player>().Indicator.Enable();
                 highlight = true;
-                chairs.transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = true;
-                ResponsibleCamera._instance.focusAt(chairs.transform);
+                chairs.transform.GetChild(0).GetComponent<SpriteRenderer>().sortingLayerName = "UI";
+                chairs.transform.GetChild(0).GetComponent<SpriteRenderer>().sortingOrder = 4;
+                ResponsibleCamera._instance.Overview();
                 StartCoroutine(LookAtReleaser());
                 break;
             }
@@ -286,6 +300,7 @@ public class GameManager : MonoBehaviour {
     }
     IEnumerator LookAtReleaser()
     {
+        yield return new WaitForSeconds(0.5f);
         float timer = 0;
         while(timer < 3)
         {
@@ -293,6 +308,7 @@ public class GameManager : MonoBehaviour {
             yield return new WaitForEndOfFrame();
         }
         ResponsibleCamera._instance.reset();
+        chairs.transform.GetChild(0).GetComponent<SpriteRenderer>().sortingLayerName = "UnderMask";
         yield return null;
     }
     IEnumerator ChairHoldTimeDecreaser()

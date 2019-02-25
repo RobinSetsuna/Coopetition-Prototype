@@ -310,7 +310,7 @@ public class Player : MonoBehaviour {
             {
                 // reduce speed,friction
                 var direction = rb2d.velocity.normalized;
-                rb2d.AddForce(new Vector2(-direction.x*50f,0f));
+                rb2d.AddForce(new Vector2(-direction.x*10f, 0f));
                 //rb2d.AddForce(new Vector2(0f,-direction.y*10f));
             }
         }else{
@@ -326,7 +326,7 @@ public class Player : MonoBehaviour {
             {
                 // reduce speed,friction
                 var direction = rb2d.velocity.normalized;
-                rb2d.AddForce(new Vector2(-direction.x*50f, 0f));
+                rb2d.AddForce(new Vector2(-direction.x*10f, 0f));
                 //rb2d.AddForce(new Vector2(0f,-direction.y*10f));
             }
         }
@@ -349,7 +349,7 @@ public class Player : MonoBehaviour {
             {
                 // reduce speed,friction
                 var direction = rb2d.velocity.normalized;
-                rb2d.AddForce(new Vector2(0f,-direction.y*50f));
+                rb2d.AddForce(new Vector2(0f,-direction.y*10f));
                 //rb2d.AddForce(new Vector2(0f,-direction.y*10f));
             }
         }else{
@@ -365,7 +365,7 @@ public class Player : MonoBehaviour {
             {
                 // reduce speed,friction
                 var direction = rb2d.velocity.normalized;
-                rb2d.AddForce(new Vector2(0f,-direction.y*50f));
+                rb2d.AddForce(new Vector2(0f,-direction.y*10f));
                 //rb2d.AddForce(new Vector2(0f,-direction.y*10f));
             }
         }

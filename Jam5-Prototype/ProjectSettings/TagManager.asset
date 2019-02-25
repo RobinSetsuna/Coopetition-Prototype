@@ -44,6 +44,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: UnderMask
+    uniqueID: 1182232081
+    locked: 0
   - name: Active
     uniqueID: 1649819283
     locked: 0

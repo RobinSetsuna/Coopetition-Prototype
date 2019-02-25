@@ -5,7 +5,8 @@ using UnityEngine;
 public enum CameraState
 {
 	Idle = 0, // the normal state of camera, in this state, camera will automatically adjust the position and scope for 4 players
-	Focusing // focus at a point.
+	Focusing, // focus at a point.
+    Overview
 }
 
 public class ResponsibleCamera : MonoBehaviour {
@@ -158,7 +159,15 @@ public class ResponsibleCamera : MonoBehaviour {
 				posy = Mathf.SmoothDamp(transform.position.y,target.position.y, ref velocity.y, smoothTimeY);
 				transform.position = new Vector3(posx + x, posy + y, transform.position.z);
 				break;
-		}
+
+            case CameraState.Overview:
+                camera.orthographicSize = Mathf.SmoothDamp(camera.orthographicSize, 15f, ref tempVelocity, smoothTimeX * 2);
+                posx = Mathf.SmoothDamp(transform.position.x, 0f, ref velocity.x, smoothTimeX);
+                posy = Mathf.SmoothDamp(transform.position.y, 0f, ref velocity.y, smoothTimeY);
+                transform.position = new Vector3(posx + x, posy + y, transform.position.z);
+                break;
+
+        }
 	}
 	
 //	void OnDrawGizmos()
@@ -181,8 +190,13 @@ public class ResponsibleCamera : MonoBehaviour {
 		target = _target;
 		currentState = CameraState.Focusing;
 	}
-	
-	public void reset()
+
+    public void Overview()
+    {
+        currentState = CameraState.Overview;
+    }
+
+    public void reset()
 	{
 		target = null;
 		currentState = CameraState.Idle;
