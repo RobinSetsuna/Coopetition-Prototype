@@ -231,10 +231,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49a13e7f720cb62498e3e98e2c24cb77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NoramlSpeed: 2
+  NoramlSpeed: 5
   NoramlBoostStrength: 300
   NoramlBoostFreezeDuration: 0.5
-  CarrySpeed: 1.7
+  CarrySpeed: 3.7
   CarryBoostStrength: 250
   CarryBoostFreezeDuration: 0.7
   index: 2

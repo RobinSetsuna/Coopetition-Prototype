@@ -35,11 +35,12 @@ public class Player : MonoBehaviour {
     [SerializeField] private RuntimeAnimatorController carrying;
     
     
-    [SerializeField] private float maxSpeed;
-    [SerializeField] private float minSpeed;
+    public float maxSpeed;
+    public float minSpeed;
     private Rigidbody2D rb2d;
     public PersonalIndicator Indicator;
     private Animator anim;
+    private Vector2 CurrentPressDirec;
     private playerState previousState;
     [SerializeField] private Transform seatPoint;
     [SerializeField] private GameObject FX;
@@ -89,9 +90,9 @@ public class Player : MonoBehaviour {
                         break;
 
                     case playerState.Boosting:
-                        var temp = rb2d.velocity;
+                        //var temp = rb2d.velocity;
                         // get current move direction
-                        var currentDirection = temp.normalized;
+                        var currentDirection = CurrentPressDirec;
                         rb2d.AddForce(currentDirection * boostStrength);
                         // add force to same direction
                         StartCoroutine(releaseToIdle(boostFreezeDuration));
@@ -113,6 +114,7 @@ public class Player : MonoBehaviour {
 
                     case playerState.Trapped:
                         maxSpeed = 0;
+                        minSpeed = 0;
                         StartCoroutine(releaseToIdle(trappedTimer));
                         break;
                 }
@@ -125,13 +127,13 @@ public class Player : MonoBehaviour {
     // Use this for initialization
     void Start () {
         rb2d = GetComponent<Rigidbody2D>();
-        currentState = playerState.Moveable;
         anim = GetComponent<Animator>();
         Indicator = GetComponentInChildren<PersonalIndicator>();
         Indicator.Initialize();
         Star.GetComponent<ParticleSystem>().enableEmission = false;
-        maxSpeed = NoramlSpeed;
-        minSpeed = - NoramlSpeed;
+        CurrentState = playerState.Moveable;
+        //maxSpeed = NoramlSpeed;
+        //minSpeed = -NoramlSpeed;
         boostStrength = NoramlBoostStrength;
         boostFreezeDuration = NoramlBoostFreezeDuration;
     }
@@ -149,6 +151,7 @@ public class Player : MonoBehaviour {
                 float v = Input.GetAxis("Vertical" + index);
                 anim.SetFloat("h",h);
                 anim.SetFloat("v",v);
+                CurrentPressDirec = new Vector2(h, v);
                 physicsInputHelper(h, v);
                 if (Mathf.Abs(h) < 0.1f && Mathf.Abs(v) < 0.1f)
                 {
@@ -179,6 +182,7 @@ public class Player : MonoBehaviour {
                 float v1 = Input.GetAxis("Vertical" + index);
                 anim.SetFloat("h",h1);
                 anim.SetFloat("v",v1);
+                CurrentPressDirec = new Vector2(h1, v1);
                 physicsInputHelper(h1, v1);
                 if (Mathf.Abs(h1) < 0.1f && Mathf.Abs(v1) < 0.1f)
                 {
@@ -278,7 +282,7 @@ public class Player : MonoBehaviour {
         {
             if (Mathf.Abs(h) > 0.1f)
             {
-                var direction = Vector3.right * h *speed;
+                var direction = Vector3.right * h * 4f;
                 if (direction.x * rb2d.velocity.x < 0)
                 {
                     direction = direction * 2;
@@ -317,7 +321,7 @@ public class Player : MonoBehaviour {
         {
             if (Mathf.Abs(v) > 0.1f)
             {
-                var direction = Vector3.up * v *speed;
+                var direction = Vector3.up * v * 4f;
                 if (direction.y * rb2d.velocity.y < 0)
                 {
                     direction = direction * 2;
