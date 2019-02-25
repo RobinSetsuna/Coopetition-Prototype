@@ -112,47 +112,47 @@ public class GameManager : MonoBehaviour {
                         //exits.transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = true;
                         break;
                     case GameState.End:
-                        //Distroy former points and black fog
-                        ActiveOption(false);
-                        roundIndex += 1;
-                        if (roundIndex % (totalRounds + 1) == 0)
-                        {
-                            int max = 0;
-                            string winner = "nobody";
-                            foreach(KeyValuePair<string,int> p in playerScore)
-                            {
-                                if (p.Value >= max)
-                                {
-                                    max = p.Value;
-                                    winner = p.Key;
-                                }                              
-                            }
-                            if(CheckWinner(max))
-                            {
-                                ShowScore("Winner is " + winner + "!");
-                            }
-                            else
-                            {
-                                totalRounds++;
-                                ShowScore("Round End");                              
-                            }
-                        }
-                        else
-                        {
-                            ShowScore("Round End");
-                        }
-                        player0.GetComponent<Player>().setPlayerState(playerState.Default);
-                        player1.GetComponent<Player>().setPlayerState(playerState.Default);
-                        player2.GetComponent<Player>().setPlayerState(playerState.Default);
-                        player3.GetComponent<Player>().setPlayerState(playerState.Default);
-                        player0.GetComponent<Player>().Indicator.Initialize();
-                        player1.GetComponent<Player>().Indicator.Initialize();
-                        player2.GetComponent<Player>().Indicator.Initialize();
-                        player3.GetComponent<Player>().Indicator.Initialize();
-                        var chairsObj = GameObject.FindGameObjectsWithTag("Chair");
-                        foreach (var chairObj in chairsObj) {
-                            chairObj.SetActive(false);
-                        }
+                        //Distroy former points and black fog 
+                        StartCoroutine(ShowScoreDelay());
+                        //roundIndex += 1;
+                        //if (roundIndex % (totalRounds + 1) == 0)
+                        //{
+                        //    int max = 0;
+                        //    string winner = "nobody";
+                        //    foreach(KeyValuePair<string,int> p in playerScore)
+                        //    {
+                        //        if (p.Value >= max)
+                        //        {
+                        //            max = p.Value;
+                        //            winner = p.Key;
+                        //        }                              
+                        //    }
+                        //    if(CheckWinner(max))
+                        //    {
+                        //        ShowScore("Winner is " + winner + "!");
+                        //    }
+                        //    else
+                        //    {
+                        //        totalRounds++;
+                        //        ShowScore("Round End");                              
+                        //    }
+                        //}
+                        //else
+                        //{
+                        //    ShowScore("Round End");
+                        //}
+                        //player0.GetComponent<Player>().setPlayerState(playerState.Default);
+                        //player1.GetComponent<Player>().setPlayerState(playerState.Default);
+                        //player2.GetComponent<Player>().setPlayerState(playerState.Default);
+                        //player3.GetComponent<Player>().setPlayerState(playerState.Default);
+                        //player0.GetComponent<Player>().Indicator.Initialize();
+                        //player1.GetComponent<Player>().Indicator.Initialize();
+                        //player2.GetComponent<Player>().Indicator.Initialize();
+                        //player3.GetComponent<Player>().Indicator.Initialize();
+                        //var chairsObj = GameObject.FindGameObjectsWithTag("Chair");
+                        //foreach (var chairObj in chairsObj) {
+                        //    chairObj.SetActive(false);
+                        //}
                         break;
                 }
             }
@@ -218,7 +218,62 @@ public class GameManager : MonoBehaviour {
     {
         Application.Quit();
     }
-
+    IEnumerator ShowScoreDelay() {
+        var playerObjs = FindObjectsOfType<Player>();
+        Transform winMan = exits.transform;
+        foreach (var player in playerObjs)
+        {
+            if (player.CurrentState == playerState.Carrying)
+            {
+                winMan = player.transform;
+                break;
+            }
+        }
+        ResponsibleCamera._instance.focusAt(winMan);
+        yield return new WaitForSeconds(3f);
+        ResponsibleCamera._instance.reset();
+        ActiveOption(false);
+        roundIndex += 1;
+        if (roundIndex % (totalRounds + 1) == 0)
+        {
+            int max = 0;
+            string winner = "nobody";
+            foreach (KeyValuePair<string, int> p in playerScore)
+            {
+                if (p.Value >= max)
+                {
+                    max = p.Value;
+                    winner = p.Key;
+                }
+            }
+            if (CheckWinner(max))
+            {
+                ShowScore("Winner is " + winner + "!");
+            }
+            else
+            {
+                totalRounds++;
+                ShowScore("Round End");
+            }
+        }
+        else
+        {
+            ShowScore("Round End");
+        }
+        player0.GetComponent<Player>().setPlayerState(playerState.Default);
+        player1.GetComponent<Player>().setPlayerState(playerState.Default);
+        player2.GetComponent<Player>().setPlayerState(playerState.Default);
+        player3.GetComponent<Player>().setPlayerState(playerState.Default);
+        player0.GetComponent<Player>().Indicator.Initialize();
+        player1.GetComponent<Player>().Indicator.Initialize();
+        player2.GetComponent<Player>().Indicator.Initialize();
+        player3.GetComponent<Player>().Indicator.Initialize();
+        var chairsObj = GameObject.FindGameObjectsWithTag("Chair");
+        foreach (var chairObj in chairsObj)
+        {
+            chairObj.SetActive(false);
+        }
+    }
     IEnumerator ChairTimer()
     {
         isChairTimerOn = true;
