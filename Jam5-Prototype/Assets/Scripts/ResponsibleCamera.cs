@@ -153,7 +153,7 @@ public class ResponsibleCamera : MonoBehaviour {
 			
 			case CameraState.Focusing:
 				
-				camera.orthographicSize = Mathf.SmoothDamp(camera.orthographicSize,cameraSizeOnFocusing, ref velocity.x,smoothTimeX * 4);
+				camera.orthographicSize = Mathf.SmoothDamp(camera.orthographicSize,cameraSizeOnFocusing, ref tempVelocity, smoothTimeX * 4);
 				posx = Mathf.SmoothDamp(transform.position.x,target.position.x, ref velocity.x,smoothTimeX);
 				posy = Mathf.SmoothDamp(transform.position.y,target.position.y, ref velocity.y, smoothTimeY);
 				transform.position = new Vector3(posx + x, posy + y, transform.position.z);

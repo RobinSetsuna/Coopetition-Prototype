@@ -105,6 +105,7 @@ public class GameManager : MonoBehaviour {
                     case GameState.Battle:
                         blackMask.SetActive(false);
                         chairs.GetComponent<ItemIndicator>().Disable();
+                        //exits.transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = true;
                         break;
                     case GameState.End:
                         //Distroy former points and black fog
@@ -247,11 +248,24 @@ public class GameManager : MonoBehaviour {
                 LogUtility.PrintLogFormat("GameManager", "Highlight the chair");
                 //Hightlight the chair///////////////
                 highlight = true;
-                chairs.GetComponent<ItemIndicator>().Enable();
+                chairs.transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = true;
+                ResponsibleCamera._instance.focusAt(chairs.transform);
+                StartCoroutine(LookAtReleaser());
                 break;
             }
             yield return null;
         }
+        yield return null;
+    }
+    IEnumerator LookAtReleaser()
+    {
+        float timer = 0;
+        while(timer < 3)
+        {
+            timer += Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+        ResponsibleCamera._instance.reset();
         yield return null;
     }
     IEnumerator ChairHoldTimeDecreaser()
