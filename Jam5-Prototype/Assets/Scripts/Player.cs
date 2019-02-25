@@ -7,7 +7,8 @@ public enum playerState {
     Seated,
     Boosting,
     Carrying,
-    Default
+    Default,
+    Trapped
    }
 public class Player : MonoBehaviour {
     [SerializeField] private float NoramlSpeed;
@@ -21,6 +22,7 @@ public class Player : MonoBehaviour {
     private float speed;
     private float boostStrength;
     private float boostFreezeDuration;
+    private float trappedTimer = 1.75f;
 
     [SerializeField] private int index;
     [SerializeField] private playerState currentState;
@@ -107,6 +109,11 @@ public class Player : MonoBehaviour {
                             previousState = playerState.Carrying;
                             Star.GetComponent<ParticleSystem>().enableEmission = false;
                         }
+                        break;
+
+                    case playerState.Trapped:
+                        maxSpeed = 0;
+                        StartCoroutine(releaseToIdle(trappedTimer));
                         break;
                 }
             }
@@ -256,6 +263,10 @@ public class Player : MonoBehaviour {
                 FindChairLeader().seatingBinding = seatPoint;
                 GameManager.Instance.CarryChair(gameObject.name);
             }
+        }
+        if(collider.tag == "Trap")
+        {
+            currentState = playerState.Trapped;
         }
     }
 
