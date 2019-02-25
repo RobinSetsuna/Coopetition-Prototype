@@ -77,12 +77,14 @@ public class Player : MonoBehaviour {
                         {
                             Star.GetComponent<ParticleSystem>().enableEmission = false;
                         }
-
-                        if (previousState == playerState.Carrying)
-                        {
-                            FindChairLeader().seatingBinding = null;
+                        if (previousState == playerState.Carrying) {
+                            var temp = FindChairLeader();
+                            if (temp)
+                            {
+                            temp.seatingBinding = null;
+                            }
+                            
                         }
-
                         break;
                     case playerState.Seated:
                         //run when playerState transfered to seated
@@ -132,10 +134,12 @@ public class Player : MonoBehaviour {
         Indicator.Initialize();
         Star.GetComponent<ParticleSystem>().enableEmission = false;
         CurrentState = playerState.Moveable;
+        seatingBinding = null;
         //maxSpeed = NoramlSpeed;
         //minSpeed = -NoramlSpeed;
         boostStrength = NoramlBoostStrength;
         boostFreezeDuration = NoramlBoostFreezeDuration;
+
     }
 	
 	// Update is called once per frame
@@ -202,7 +206,7 @@ public class Player : MonoBehaviour {
                 break;
             case playerState.Seated:
                 //bind the position to seating
-                if (seatingBinding)
+                if (seatingBinding&&GameManager.Instance.PlayerCarryChair != null)
                 {
                     transform.position = seatingBinding.position;
                 }
@@ -212,9 +216,13 @@ public class Player : MonoBehaviour {
 	}
     public void Initialize(Vector3 position,int _index = -1)
     {
+        rb2d = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
         index = _index == -1 ? index : _index;
-        currentState = playerState.Moveable;
         transform.position = position;
+        rb2d.simulated = true;
+        GetComponent<CapsuleCollider2D>().enabled = true;
+        CurrentState = playerState.Moveable;
     }
 
     public int GetIndex() { return index; }
@@ -231,7 +239,15 @@ public class Player : MonoBehaviour {
             }
             else
             {
-                setPlayerState(playerState.Carrying);  
+
+                if (GameManager.Instance.PlayerCarryChair == null)
+                {
+                    setPlayerState(playerState.Moveable);
+                }
+                else{
+                    setPlayerState(playerState.Carrying);
+                }
+              
             }
             // release the freezing
         }
@@ -249,11 +265,11 @@ public class Player : MonoBehaviour {
                 rb2d.velocity = Vector3.zero;
                 transform.position = collider.transform.position - new Vector3(0,0.1f,0);
                 CurrentState = playerState.Seated;
+                anim.SetBool("Seated", true);
                 rb2d.simulated = false;
                 GetComponent<CapsuleCollider2D>().enabled = false;
                 GameManager.Instance.SitOnChair(gameObject.name);
                 //GetComponent<BoxCollider2D>().enabled = true;
-                transform.tag = "Chair";
                 //triggerBox.SetActive(true);
                 GameManager.Instance.InstantiateTriggerBox(transform.position);
                 //Todo: Disable movement
@@ -294,7 +310,7 @@ public class Player : MonoBehaviour {
             {
                 // reduce speed,friction
                 var direction = rb2d.velocity.normalized;
-                rb2d.AddForce(new Vector2(-direction.x*10f,0f));
+                rb2d.AddForce(new Vector2(-direction.x*50f,0f));
                 //rb2d.AddForce(new Vector2(0f,-direction.y*10f));
             }
         }else{
@@ -303,14 +319,14 @@ public class Player : MonoBehaviour {
                 //do nothing
                 if (h * rb2d.velocity.x < 0)
                 {
-                    rb2d.AddForce(new Vector2(h*50f,0f));
+                    rb2d.AddForce(new Vector2(h*100f,0f));
                 }
             }
             else
             {
                 // reduce speed,friction
                 var direction = rb2d.velocity.normalized;
-                rb2d.AddForce(new Vector2(-direction.x*10f,0f));
+                rb2d.AddForce(new Vector2(-direction.x*50f, 0f));
                 //rb2d.AddForce(new Vector2(0f,-direction.y*10f));
             }
         }
@@ -333,7 +349,7 @@ public class Player : MonoBehaviour {
             {
                 // reduce speed,friction
                 var direction = rb2d.velocity.normalized;
-                rb2d.AddForce(new Vector2(0f,-direction.y*10f));
+                rb2d.AddForce(new Vector2(0f,-direction.y*50f));
                 //rb2d.AddForce(new Vector2(0f,-direction.y*10f));
             }
         }else{
@@ -342,14 +358,14 @@ public class Player : MonoBehaviour {
                 //do nothing
                 if (v * rb2d.velocity.y < 0)
                 {
-                    rb2d.AddForce(new Vector2(0f,h*50f));
+                    rb2d.AddForce(new Vector2(0f,h*100f));
                 }
             }
             else
             {
                 // reduce speed,friction
                 var direction = rb2d.velocity.normalized;
-                rb2d.AddForce(new Vector2(0f,-direction.y*10f));
+                rb2d.AddForce(new Vector2(0f,-direction.y*50f));
                 //rb2d.AddForce(new Vector2(0f,-direction.y*10f));
             }
         }

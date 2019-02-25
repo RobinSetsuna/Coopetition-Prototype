@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour {
     [SerializeField] private string playerOnChair;
     [SerializeField] private string playerCarryChair;
     [SerializeField] private GameObject TriggerBox;
-    private float chairHoldTime;
+    public float chairHoldTime;
     private int roundIndex;
     private bool isChairTimerOn;
     private GameObject chairs;
@@ -137,6 +137,14 @@ public class GameManager : MonoBehaviour {
                         {
                             ShowScore("Round End");
                         }
+                        player0.GetComponent<Player>().setPlayerState(playerState.Default);
+                        player1.GetComponent<Player>().setPlayerState(playerState.Default);
+                        player2.GetComponent<Player>().setPlayerState(playerState.Default);
+                        player3.GetComponent<Player>().setPlayerState(playerState.Default);
+                        var chairsObj = GameObject.FindGameObjectsWithTag("Chair");
+                        foreach (var chairObj in chairsObj) {
+                            chairObj.SetActive(false);
+                        }
                         break;
                 }
             }
@@ -215,25 +223,34 @@ public class GameManager : MonoBehaviour {
             GameObject.Find("TextHoldTime").GetComponent<Text>().text = chairHoldTime.ToString();
             yield return new WaitForEndOfFrame();  
         }
-        playerCarryChair = null;
         if(CurrentGameState != GameState.End)
             LogUtility.PrintLogFormat("GameManager", "ChairDropped");
         else
             LogUtility.PrintLogFormat("GameManager", "Stop Chair Timer for New Round");
 
         isChairTimerOn = false;
+        playerCarryChair = null;
         //drop the chair////////////////
         //DropChair.Invoke();  
         var players = FindObjectsOfType<Player>();
+        Vector3 seatPos = Vector3.zero;
+        int counter = 0;
         foreach (var player in players)
         {
+
+            if (player.CurrentState == playerState.Seated) {
+                seatPos = player.transform.position;
+                player.seatingBinding = null;
+                counter++;
+            }
             if (player.CurrentState == playerState.Carrying)
             {
-                playerCarryChair = null;
                 player.setPlayerState(playerState.Moveable);
-                StartCoroutine(releaseCoolDown(player.transform.position));
-                break;
             }
+        }
+        yield return new WaitForSeconds(2f);
+        if (counter > 0) {
+            InstantiateTriggerBox(seatPos);
         }
         //decrese hold time on every drop
         if (currentChairHoldTime - chairHoldTimeDecOnDrop < minChairHoldTime)
@@ -241,10 +258,6 @@ public class GameManager : MonoBehaviour {
         else
             chairHoldTime = currentChairHoldTime - chairHoldTimeDecOnDrop;
         yield return null;
-    }
-    IEnumerator releaseCoolDown(Vector3 pos) {
-        yield return new WaitForSeconds(0.5f);
-        InstantiateTriggerBox(pos);
     }
     IEnumerator HighlightTimer()
     {
@@ -376,10 +389,14 @@ public class GameManager : MonoBehaviour {
         Transform[] t = pairs.transform.GetChild(index).GetComponentsInChildren<Transform>();
         chairs.transform.position = t[1].position;
         exits.transform.position = t[2].position;
-        player0.transform.position = t[3].position;
-        player1.transform.position = t[4].position;
-        player2.transform.position = t[5].position;
-        player3.transform.position = t[6].position;
+        player0.GetComponent<Player>().Initialize(t[3].position);
+        player1.GetComponent<Player>().Initialize(t[4].position);
+        player2.GetComponent<Player>().Initialize(t[5].position);
+        player3.GetComponent<Player>().Initialize(t[6].position);
+        //player0.transform.position = t[3].position;
+        //player1.transform.position = t[4].position;
+        //player2.transform.position = t[5].position;
+        //player3.transform.position = t[6].position;
         ActiveOption(true);
     }
 

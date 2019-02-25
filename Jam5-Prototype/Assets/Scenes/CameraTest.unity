@@ -824,6 +824,7 @@ MonoBehaviour:
   playerOnChair: 
   playerCarryChair: 
   TriggerBox: {fileID: 1025002308256828, guid: a8381167ef00ee3478fcfc1b842c667c, type: 2}
+  chairHoldTime: 0
   highlight: 0
   blackMask: {fileID: 94655033}
   roundText: {fileID: 573384668}
