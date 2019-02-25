@@ -161,20 +161,20 @@ public class ResponsibleCamera : MonoBehaviour {
 		}
 	}
 	
-	void OnDrawGizmos()
-	{
-		// Draw a yellow sphere at the transform's position
-		Vector3 center = new Vector3((currentSmallestPlayer.x+currentLargestPlayer.x)/2,(currentSmallestPlayer.y+currentLargestPlayer.y)/2,1f); // get current center of players
-		Gizmos.color = Color.red;
-
-		Gizmos.DrawSphere(new Vector3(currentLargestPlayer.x,currentLargestPlayer.y,1f),0.5f);
-		
-		Gizmos.color = Color.blue;
-		Gizmos.DrawSphere(new Vector3(currentLargestWindow.x,currentLargestWindow.y,1f),0.5f);
-		
-		Gizmos.color = Color.yellow;
-		Gizmos.DrawSphere(center, 1);
-	}
+//	void OnDrawGizmos()
+//	{
+//		// Draw a yellow sphere at the transform's position
+//		Vector3 center = new Vector3((currentSmallestPlayer.x+currentLargestPlayer.x)/2,(currentSmallestPlayer.y+currentLargestPlayer.y)/2,1f); // get current center of players
+//		Gizmos.color = Color.red;
+//
+//		Gizmos.DrawSphere(new Vector3(currentLargestPlayer.x,currentLargestPlayer.y,1f),0.5f);
+//		
+//		Gizmos.color = Color.blue;
+//		Gizmos.DrawSphere(new Vector3(currentLargestWindow.x,currentLargestWindow.y,1f),0.5f);
+//		
+//		Gizmos.color = Color.yellow;
+//		Gizmos.DrawSphere(center, 1);
+//	}
 
 	public void focusAt(Transform _target)
 	{

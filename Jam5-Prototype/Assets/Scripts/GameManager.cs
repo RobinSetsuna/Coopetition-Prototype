@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour {
     [SerializeField] private float chairHoldTimeDecOnDrop;                  //decrease the chair Hold Time when drop the chair
     [SerializeField] private string playerOnChair;
     [SerializeField] private string playerCarryChair;
-
+    [SerializeField] private GameObject TriggerBox;
     private float chairHoldTime;
     private int roundIndex;
     private bool isChairTimerOn;
@@ -405,6 +405,12 @@ public class GameManager : MonoBehaviour {
             roundResultText.SetActive(false);
         }          
     }
+
+    public void InstantiateTriggerBox(Vector3 pos)
+    {
+        Instantiate(TriggerBox, pos, Quaternion.identity);
+    }
+
     IEnumerator WaitForSeconds(float f, string text)
     {
         info.GetComponent<Text>().text = text;
