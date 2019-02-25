@@ -33,8 +33,8 @@ public class Player : MonoBehaviour {
     [SerializeField] private RuntimeAnimatorController carrying;
     
     
-    [SerializeField] private float maxSpeed = 2f;
-    [SerializeField] private float minSpeed = -2f;
+    [SerializeField] private float maxSpeed;
+    [SerializeField] private float minSpeed;
     private Rigidbody2D rb2d;
     public PersonalIndicator Indicator;
     private Animator anim;
@@ -66,7 +66,8 @@ public class Player : MonoBehaviour {
                     case playerState.Moveable:
                         //run when playerState transfered to Moveable
                         anim.runtimeAnimatorController = walking;
-                        speed = NoramlSpeed;
+                        maxSpeed = NoramlSpeed;
+                        minSpeed = - NoramlSpeed;
                         boostStrength = NoramlBoostStrength;
                         boostFreezeDuration = NoramlBoostFreezeDuration;
                         if (previousState == playerState.Boosting)
@@ -97,7 +98,8 @@ public class Player : MonoBehaviour {
                     case playerState.Carrying:
                         // change the speed and duration
                         anim.runtimeAnimatorController= carrying;
-                        speed = CarrySpeed;
+                        maxSpeed = CarrySpeed;
+                        minSpeed = - CarrySpeed;
                         boostStrength = CarryBoostStrength;
                         boostFreezeDuration = CarryBoostFreezeDuration;
                         if (previousState == playerState.Boosting)
@@ -121,7 +123,8 @@ public class Player : MonoBehaviour {
         Indicator = GetComponentInChildren<PersonalIndicator>();
         Indicator.Initialize();
         Star.GetComponent<ParticleSystem>().enableEmission = false;
-        speed = NoramlSpeed;
+        maxSpeed = NoramlSpeed;
+        minSpeed = - NoramlSpeed;
         boostStrength = NoramlBoostStrength;
         boostFreezeDuration = NoramlBoostFreezeDuration;
     }
