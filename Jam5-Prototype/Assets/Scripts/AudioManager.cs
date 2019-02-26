@@ -7,6 +7,8 @@ public class AudioManager : MonoBehaviour
 
     [Header("BGM")]
     public AudioClip BGM;
+    public AudioClip BGM2;
+    public AudioSource BGM2Source;
     public AudioSource BGMSource;
     [Header("SoundFX")]
     public AudioClip[] SoundFX;
@@ -55,6 +57,12 @@ public class AudioManager : MonoBehaviour
         BGMSource.clip = BGM;
         BGMSource.loop = true;
         BGMSource.Play();
+    }
+    public void PlayBGM2()
+    {
+        BGM2Source.clip = BGM2;
+        BGM2Source.loop = true;
+        BGM2Source.Play();
     }
 
     /// <summary>
@@ -163,12 +171,14 @@ public class AudioManager : MonoBehaviour
     {
         GlobalBGMVoume = volume;
         BGMSource.volume = volume;
+        BGM2Source.volume = volume;
     }
 
-    private void FadeOut(AudioSource audioSource, float fadeOutTime)
+    public void FadeOut(AudioSource audioSource, float fadeOutTime)
     {
         StartCoroutine(AudioFadeOut.FadeOut(audioSource, fadeOutTime));
     }
+
 }
 public static class AudioFadeOut
 {

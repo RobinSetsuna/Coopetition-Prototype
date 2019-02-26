@@ -94,6 +94,8 @@ public class Player : MonoBehaviour {
                     case playerState.Boosting:
                         //var temp = rb2d.velocity;
                         // get current move direction
+                        AudioManager.Instance.PlaySoundEffect("Boost", volume: 0.3f);
+
                         var currentDirection = CurrentPressDirec;
                         rb2d.AddForce(currentDirection * boostStrength);
                         // add force to same direction
@@ -179,14 +181,14 @@ public class Player : MonoBehaviour {
                 
                 //rb2d.velocity = new Vector2(h * speed, v * speed);
                 if (Input.GetButtonDown("Boost" + index)) {
-                    //boosting
+                    //boosting                    
                     // TODO may add another code here
                     setPlayerState(playerState.Boosting);
                 }
                 break;
             case playerState.Boosting:
                 // when boosting, freeze all input
-                AudioManager.Instance.PlaySoundEffect("Boost",volume:0.05f);
+                
                 Star.GetComponent<ParticleSystem>().enableEmission = true;
                 break;
 
@@ -213,6 +215,7 @@ public class Player : MonoBehaviour {
                 if (Input.GetButtonDown("Boost" + index)) {
                     //boosting
                     // TODO may add another code here
+
                     setPlayerState(playerState.Boosting);
                 }
                 break;
@@ -278,7 +281,7 @@ public class Player : MonoBehaviour {
         {           
             if (GameManager.Instance.PlayerOnChair == null)
             {
-                AudioManager.Instance.PlaySoundEffect("SitOnChair", false, false, 1f);
+                AudioManager.Instance.PlaySoundEffect("SitOnChair", false, false, 0.7f);
                 LogUtility.PrintLogFormat("Player", "{0} Sit on Chair!", gameObject.name);
                 collider.gameObject.SetActive(false);
                 rb2d.velocity = Vector3.zero;

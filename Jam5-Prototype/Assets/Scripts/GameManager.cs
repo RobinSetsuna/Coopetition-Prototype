@@ -89,7 +89,9 @@ public class GameManager : MonoBehaviour {
                 {
                     case GameState.Initial:
                         roundText.GetComponent<Text>().text = "Round" + roundIndex;
-                       
+                        AudioManager.Instance.BGM2Source.Stop();
+                        AudioManager.Instance.SetGobalBGMVolume(0.05f);
+                        AudioManager.Instance.PlayBGM();
                         chairHoldTime = initialChairHoldTime;
                         isChairTimerOn = false;
                         highlight = false;
@@ -107,6 +109,9 @@ public class GameManager : MonoBehaviour {
                         StartCoroutine(ChairHoldTimeDecreaser());
                         break;
                     case GameState.Battle:
+                        AudioManager.Instance.FadeOut(AudioManager.Instance.BGMSource, 1f);
+                        AudioManager.Instance.SetGobalBGMVolume(0.1f);
+                        AudioManager.Instance.PlayBGM2();
                         player0.GetComponent<Player>().Indicator.setTarget(exits.transform);
                         player1.GetComponent<Player>().Indicator.setTarget(exits.transform);
                         player2.GetComponent<Player>().Indicator.setTarget(exits.transform);
@@ -168,7 +173,7 @@ public class GameManager : MonoBehaviour {
         //initial current round index
         roundIndex = 1;
 
-        AudioManager.Instance.PlayBGM();
+        
 
         //Random generate end point, player born point, chair point
         chairs = Instantiate(this.chair, GameObject.Find("Level").transform);
@@ -494,8 +499,8 @@ public class GameManager : MonoBehaviour {
     }
 
     public void CarryChair(string p)
-    {
-        if(!isChairTimerOn)
+    {      
+        if (!isChairTimerOn)
             StartCoroutine(ChairTimer());
         playerCarryChair = p;
         StartCoroutine(WaitForSeconds(5f, p + " Carrys the Chair!"));
