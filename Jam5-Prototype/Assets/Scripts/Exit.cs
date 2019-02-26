@@ -2,8 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Exit : MonoBehaviour {
+public class Exit : MonoBehaviour
+{
 
+	[SerializeField] private GameObject aura;
+
+	[SerializeField] private GameObject firework;
 	// Use this for initialization
 	void Start () {
 		
@@ -21,9 +25,20 @@ public class Exit : MonoBehaviour {
             if(GameManager.Instance.PlayerCarryChair == collision.name)
             {
                 LogUtility.PrintLogFormat("Door", "{0} win!", GameManager.Instance.PlayerCarryChair);
+	            StartCoroutine(playAnim());
                 GameManager.Instance.EndCurrentRound();
             }
 
         }
     }
+
+	IEnumerator playAnim()
+	{
+		aura.SetActive(true);
+		firework.SetActive(true);
+		firework.GetComponent<ParticleSystem>().Play(true);
+		yield return  new WaitForSeconds(1.5f);
+		aura.SetActive(false);
+		firework.SetActive(false);
+	}
 }

@@ -144,7 +144,18 @@ public class Player : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        switch (currentState) {
+	    
+	    //prevent bouncing out of level
+	    if (Mathf.Abs(transform.position.x) > 16f || Mathf.Abs(transform.position.y) > 10.2f)
+	    {
+	        if (currentState != playerState.Default)
+	        {
+	            setPlayerState(playerState.Default);
+	            StartCoroutine(resetPos());
+	        }
+	    }
+
+	    switch (currentState) {
             case playerState.Moveable:
                 if (index == 2 || index == 3)
                 {
@@ -229,6 +240,12 @@ public class Player : MonoBehaviour {
 
     public void setPlayerState(playerState targetState) { CurrentState = targetState; }
 
+    IEnumerator resetPos()
+    {
+        yield return  new WaitForSeconds(1f);
+        transform.position = Vector3.zero;
+        setPlayerState(playerState.Moveable);
+    }
 
     IEnumerator releaseToIdle(float duration) {
         yield return new WaitForSeconds(duration);

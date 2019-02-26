@@ -21,6 +21,10 @@ public class LightAura : MonoBehaviour
 	{
 		_instance = this;
 		// get all four players light Aura
+	}
+
+	public void Initialize()
+	{
 		lightsAuras = GameObject.FindGameObjectsWithTag("LightAura");
 		bind = new Dictionary<GameObject, bool>{};
 		foreach (var lightsAura in lightsAuras)
@@ -30,7 +34,7 @@ public class LightAura : MonoBehaviour
 		}
 		tempVelocities = new float[lightsAuras.Length];
 	}
-	
+
 	// Update is called once per frame
 	void FixedUpdate()
 	{

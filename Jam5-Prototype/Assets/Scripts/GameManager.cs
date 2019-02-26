@@ -88,13 +88,16 @@ public class GameManager : MonoBehaviour {
                 {
                     case GameState.Initial:
                         roundText.GetComponent<Text>().text = "Round" + roundIndex;
+                       
                         chairHoldTime = initialChairHoldTime;
                         isChairTimerOn = false;
                         highlight = false;
                         PlayerOnChair = null;
                         PlayerCarryChair = null;
                         Spawn();
-                        blackMask.SetActive(true);
+                        LightAura._instance.Initialize();
+                        LightAura._instance.Enable();
+                        //blackMask.SetActive(true);
                         CurrentGameState = GameState.Searching;
                         break;
                     case GameState.Searching:
@@ -107,7 +110,8 @@ public class GameManager : MonoBehaviour {
                         player1.GetComponent<Player>().Indicator.setTarget(exits.transform);
                         player2.GetComponent<Player>().Indicator.setTarget(exits.transform);
                         player3.GetComponent<Player>().Indicator.setTarget(exits.transform);
-                        blackMask.SetActive(false);
+                        //blackMask.SetActive(false);
+                        LightAura._instance.Disable();
                         //chairs.GetComponent<ItemIndicator>().Disable();
                         //exits.transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = true;
                         break;
@@ -188,9 +192,6 @@ public class GameManager : MonoBehaviour {
             { "Player2(Clone)", 0 },
             { "Player3(Clone)", 0 }
         };
-        
-        
-        LightAura._instance.Enable();
     }
 
     void Awake()
