@@ -50,7 +50,8 @@ public class GameManager : MonoBehaviour {
     public GameObject [] players;
     public GameObject exit;
     public GameObject chair;
-
+    public SimpleHealthBar healthBar1;
+    public SimpleHealthBar healthBar2;
     UnityEvent DropChair;
 
     public string PlayerOnChair
@@ -167,6 +168,7 @@ public class GameManager : MonoBehaviour {
         //initial current round index
         roundIndex = 1;
 
+        AudioManager.Instance.PlayBGM();
 
         //Random generate end point, player born point, chair point
         chairs = Instantiate(this.chair, GameObject.Find("Level").transform);
@@ -284,10 +286,12 @@ public class GameManager : MonoBehaviour {
         while(CurrentGameState == GameState.Battle && chairHoldTime > 0)
         {
             chairHoldTime -= Time.deltaTime;
-            GameObject.Find("TextHoldTime").GetComponent<Text>().text = chairHoldTime.ToString();
+            healthBar2.UpdateBar(chairHoldTime, currentChairHoldTime);
+            //GameObject.Find("TextHoldTime").GetComponent<Text>().text = chairHoldTime.ToString();
             yield return new WaitForEndOfFrame();  
         }
-        if(CurrentGameState != GameState.End)
+        healthBar2.UpdateBar(chairHoldTime, currentChairHoldTime);
+        if (CurrentGameState != GameState.End)
             LogUtility.PrintLogFormat("GameManager", "ChairDropped");
         else
             LogUtility.PrintLogFormat("GameManager", "Stop Chair Timer for New Round");
@@ -380,7 +384,7 @@ public class GameManager : MonoBehaviour {
                 if (chairHoldTime != minChairHoldTime)
                 {
                     chairHoldTime--;
-                    GameObject.Find("TextHoldTime").GetComponent<Text>().text = chairHoldTime.ToString();
+                    //GameObject.Find("TextHoldTime").GetComponent<Text>().text = chairHoldTime.ToString();
                     LogUtility.PrintLogFormat("GameManager", "Chair Hold Time: {0}.", chairHoldTime);
                 }
                 else
@@ -407,8 +411,9 @@ public class GameManager : MonoBehaviour {
                 yield return null;
             }
             timer -= Time.deltaTime;
+            healthBar1.UpdateBar(timer, roundDuration);
             yield return new WaitForEndOfFrame();
-            GameObject.Find("TextTotalTime").GetComponent<Text>().text = "Time Left: " + (int)timer;
+            //GameObject.Find("TextTotalTime").GetComponent<Text>().text = "Time Left: " + (int)timer;
         }
         if(currentGameState != GameState.End)
             CurrentGameState = GameState.End;

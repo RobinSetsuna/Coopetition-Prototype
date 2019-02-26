@@ -186,6 +186,7 @@ public class Player : MonoBehaviour {
                 break;
             case playerState.Boosting:
                 // when boosting, freeze all input
+                AudioManager.Instance.PlaySoundEffect("Boost",volume:0.05f);
                 Star.GetComponent<ParticleSystem>().enableEmission = true;
                 break;
 
@@ -277,6 +278,7 @@ public class Player : MonoBehaviour {
         {           
             if (GameManager.Instance.PlayerOnChair == null)
             {
+                AudioManager.Instance.PlaySoundEffect("SitOnChair", false, false, 1f);
                 LogUtility.PrintLogFormat("Player", "{0} Sit on Chair!", gameObject.name);
                 collider.gameObject.SetActive(false);
                 rb2d.velocity = Vector3.zero;
@@ -284,7 +286,7 @@ public class Player : MonoBehaviour {
                 CurrentState = playerState.Seated;
                 anim.SetBool("Seated", true);
                 rb2d.simulated = false;
-                GetComponent<CapsuleCollider2D>().enabled = false;
+                GetComponent<CapsuleCollider2D>().enabled = false;               
                 GameManager.Instance.SitOnChair(gameObject.name);
                 //GetComponent<BoxCollider2D>().enabled = true;
                 //triggerBox.SetActive(true);
@@ -293,11 +295,12 @@ public class Player : MonoBehaviour {
             }
             else if (GameManager.Instance.PlayerCarryChair == null)
             {
+                AudioManager.Instance.PlaySoundEffect("Lift", false, false, 1f);
                 collider.gameObject.SetActive(false);
                 Destroy(collider.gameObject);
                 LogUtility.PrintLogFormat("Player", "{0} Carry Chair!", gameObject.name);
                 CurrentState = playerState.Carrying;
-                FindChairLeader().seatingBinding = seatPoint;
+                FindChairLeader().seatingBinding = seatPoint;               
                 GameManager.Instance.CarryChair(gameObject.name);
             }
         }
@@ -410,6 +413,7 @@ public class Player : MonoBehaviour {
             float force = Random.Range(400, 500);
             if (GameManager.Instance.PlayerCarryChair == collision.transform.name)
             {
+                AudioManager.Instance.PlaySoundEffect("Hit");
                 GameManager.Instance.PlayerHit();
                 //Bouncing Back
                 force *= 0.8f; 

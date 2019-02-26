@@ -26,6 +26,7 @@ public class Exit : MonoBehaviour
             {
                 LogUtility.PrintLogFormat("Door", "{0} win!", GameManager.Instance.PlayerCarryChair);
 	            StartCoroutine(playAnim());
+                AudioManager.Instance.PlaySoundEffect("Win");
                 GameManager.Instance.EndCurrentRound();
             }
 
