@@ -41,6 +41,7 @@
           </e>
         </e>
         <e p="Scripts" t="Include">
+          <e p="AudioManager.cs" t="Include" />
           <e p="Exit.cs" t="Include" />
           <e p="GameManager.cs" t="Include" />
           <e p="ItemIndicator.cs" t="Include" />
@@ -57,6 +58,25 @@
             <e p="ResourceUtility.cs" t="Include" />
             <e p="TimeUtility.cs" t="Include" />
             <e p="Utility.asmdef" t="Include" />
+          </e>
+        </e>
+        <e p="Simple Health Bar" t="Include">
+          <e p="_Asteroids Example" t="Include">
+            <e p="Scripts" t="Include">
+              <e p="AsteroidController.cs" t="Include" />
+              <e p="GameManager.cs" t="Include" />
+              <e p="HealthPickupController.cs" t="Include" />
+              <e p="PlayerController.cs" t="Include" />
+              <e p="PlayerHealth.cs" t="Include" />
+            </e>
+          </e>
+          <e p="Editor" t="Include">
+            <e p="SimpleHealthBarEditor.cs" t="Include" />
+            <e p="SimpleHealthBarWindow.cs" t="Include" />
+          </e>
+          <e p="README.txt" t="Include" />
+          <e p="Scripts" t="Include">
+            <e p="SimpleHealthBar.cs" t="Include" />
           </e>
         </e>
       </e>
