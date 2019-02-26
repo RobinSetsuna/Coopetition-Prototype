@@ -412,11 +412,12 @@ public class Player : MonoBehaviour {
     {
         if (collision.transform.tag == "Player" && currentState == playerState.Boosting)
         {
+            AudioManager.Instance.PlaySoundEffect("Hit");
             var direction = (collision.transform.position - transform.position).normalized;
             float force = Random.Range(400, 500);
             if (GameManager.Instance.PlayerCarryChair == collision.transform.name)
             {
-                AudioManager.Instance.PlaySoundEffect("Hit");
+                
                 GameManager.Instance.PlayerHit();
                 //Bouncing Back
                 force *= 0.8f; 
