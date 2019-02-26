@@ -110,7 +110,7 @@ public class GameManager : MonoBehaviour {
                         break;
                     case GameState.Battle:
                         AudioManager.Instance.FadeOut(AudioManager.Instance.BGMSource, 1f);
-                        AudioManager.Instance.SetGobalBGMVolume(0.1f);
+                        AudioManager.Instance.SetGobalBGMVolume(0.10f);
                         AudioManager.Instance.PlayBGM2();
                         player0.GetComponent<Player>().Indicator.setTarget(exits.transform);
                         player1.GetComponent<Player>().Indicator.setTarget(exits.transform);
